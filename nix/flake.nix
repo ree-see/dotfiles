@@ -45,6 +45,7 @@
             pkgs.nil
             pkgs.zellij
             pkgs._1password-cli
+            pkgs.zoxide
           ];
 
           fonts.packages = [
@@ -92,6 +93,9 @@
               ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix Apps/$app_name"
               done
             '';
+
+          # Enable Touch ID for sudo
+          security.pam.services.sudo_local.touchIdAuth = true;
 
           # macOS system settings
           system.defaults = {
