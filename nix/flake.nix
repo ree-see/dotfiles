@@ -67,6 +67,9 @@
               # "yoink" = 457622435;
               "magnet" = 441258766;
             };
+            onActivation.cleanup = "zap";
+            onActivation.autoUpdate = true;
+            onActivation.upgrade = true;
           };
 
           system.activationScripts.applications.text =
