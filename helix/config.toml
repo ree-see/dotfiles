@@ -1,0 +1,16 @@
+theme = "mytheme"
+
+[editor]
+line-number = "relative"
+rulers = [85]
+end-of-line-diagnostics = "hint"
+
+
+[editor.lsp]
+display-messages = true
+
+[editor.inline-diagnostics]
+# Show inline diagnostics when the cursor is on the line
+cursor-line = "warning" 
+# Don't expand diagnostics unless the cursor is on the line
+other-lines = "disable" 
