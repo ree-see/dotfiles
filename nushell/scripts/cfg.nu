@@ -18,6 +18,7 @@ def cfg [app: string, file?: string] {
     let resolved_app = match $app {
         "as" => "aerospace",
         "gh" => "ghostty", 
+        "nu" => "nushell",
         _ => $app
     }
     
