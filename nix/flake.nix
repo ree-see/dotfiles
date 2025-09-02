@@ -49,6 +49,7 @@
             pkgs.bundler
             pkgs.postgresql
             pkgs.rubyPackages.rails
+            pkgs.opencode # idk ab this one just trying it out
           ];
 
           fonts.packages = [
@@ -93,6 +94,10 @@
               done
             '';
 
+          # macOS system settings
+          system.defaults = {
+
+          };
           # Necessary for using flakes on this system.
           nix.settings.experimental-features = "nix-command flakes";
 
