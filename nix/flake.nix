@@ -32,6 +32,8 @@
           system.primaryUser = "reesee";
 
           nixpkgs.config.allowUnfree = true;
+          # need to install ghostty version 1.1.3 is flagged as broken from nixpkgs
+          # nixpkgs.config.allowBroken = true;
 
           # List packages installed in system profile. To search by name, run:
           # $ nix-env -qaP | grep wget
@@ -39,17 +41,10 @@
             pkgs.helix
             pkgs.zellij
             pkgs.fish
-            # pkgs.ghostty
             pkgs.mkalias
             pkgs.nil
             pkgs.zellij
             pkgs._1password-cli
-            pkgs.ruby
-            pkgs.rubocop
-            pkgs.bundler
-            pkgs.postgresql
-            pkgs.rubyPackages.rails
-            pkgs.opencode # idk ab this one just trying it out
           ];
 
           fonts.packages = [
@@ -60,9 +55,13 @@
             enable = true;
             brews = [
               "mas"
+              "sst/tap/opencode"
+              "postgresql"
+              "rbenv"
             ];
             casks = [
               "raycast"
+              "ghostty"
             ];
             masApps = {
               # "yoink" = 457622435;
