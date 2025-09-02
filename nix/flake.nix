@@ -44,6 +44,11 @@
             pkgs.nil
             pkgs.zellij
             pkgs._1password-cli
+            pkgs.ruby
+            pkgs.rubocop
+            pkgs.bundler
+            pkgs.postgresql
+            pkgs.rubyPackages.rails
           ];
 
           fonts.packages = [
@@ -55,7 +60,9 @@
             brews = [
               "mas"
             ];
-            casks = [ ];
+            casks = [
+              "raycast"
+            ];
             masApps = {
               # "yoink" = 457622435;
               "magnet" = 441258766;
