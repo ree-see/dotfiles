@@ -44,7 +44,7 @@ function nixstatus --description "Show nix-darwin configuration status"
     # Current generation
     echo ""
     echo "📦 Current Generation:"
-    darwin-rebuild --list-generations | tail -n 1
+    sudo darwin-rebuild --list-generations | tail -n 1
     
     # Git status of config
     echo ""
@@ -69,7 +69,7 @@ function nixstatus --description "Show nix-darwin configuration status"
     echo "💻 System Info:"
     echo "   macOS: "(sw_vers -productVersion)
     echo "   Nix: "(nix --version | head -n 1)
-    echo "   nix-darwin: "(darwin-rebuild --version 2>/dev/null || echo "version unknown")
+    echo "   nix-darwin: "(/run/current-system/sw/bin/darwin-rebuild --help 2>/dev/null | head -n 1 | string match -r 'darwin-rebuild.*' || echo "version unknown")
     
     # Show packages if requested
     if test $show_packages = true
@@ -90,5 +90,5 @@ function nixstatus --description "Show nix-darwin configuration status"
     # Recent generations
     echo ""
     echo "🕒 Recent Generations (last 5):"
-    darwin-rebuild --list-generations | tail -n 5
+    sudo darwin-rebuild --list-generations | tail -n 5
 end

@@ -89,7 +89,7 @@ function rebuild --description "Advanced nix-darwin configuration management"
     
     # Show current generation info
     echo "📦 Current generation:"
-    darwin-rebuild --list-generations | tail -n 1
+    sudo darwin-rebuild --list-generations | tail -n 1
     
     # Run the rebuild
     echo "🔨 Running: sudo darwin-rebuild $operation --flake $flake_path"
@@ -99,7 +99,7 @@ function rebuild --description "Advanced nix-darwin configuration management"
         # Show what changed
         if test $operation = "switch"
             echo "🎯 New generation active:"
-            darwin-rebuild --list-generations | tail -n 1
+            sudo darwin-rebuild --list-generations | tail -n 1
         end
     else
         set -l exit_code $status

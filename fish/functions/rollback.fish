@@ -36,18 +36,18 @@ function rollback --description "Rollback to previous nix-darwin generation"
     # List generations if requested
     if test $list_only = true
         echo "📦 Available nix-darwin generations:"
-        darwin-rebuild --list-generations
+        sudo darwin-rebuild --list-generations
         return 0
     end
     
     # Show current state
     echo "📦 Current generation:"
-    darwin-rebuild --list-generations | tail -n 1
+    sudo darwin-rebuild --list-generations | tail -n 1
     
     # Determine target generation
     if test -z "$target_gen"
         # Get previous generation
-        set -l generations (darwin-rebuild --list-generations | tail -n 2 | head -n 1 | string match -r '^\s*(\d+)')
+        set -l generations (sudo darwin-rebuild --list-generations | tail -n 2 | head -n 1 | string match -r '^\s*(\d+)')
         if test -n "$generations[1]"
             set target_gen $generations[1]
         else
@@ -62,7 +62,7 @@ function rollback --description "Rollback to previous nix-darwin generation"
     if sudo darwin-rebuild --rollback --switch-generation $target_gen
         echo "✅ Successfully rolled back to generation $target_gen"
         echo "📦 Active generation:"
-        darwin-rebuild --list-generations | tail -n 1
+        sudo darwin-rebuild --list-generations | tail -n 1
     else
         echo "❌ Rollback failed"
         return 1
