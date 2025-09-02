@@ -41,6 +41,7 @@
             pkgs.helix
             pkgs.zellij
             pkgs.fish
+            pkgs.nushell
             pkgs.mkalias
             pkgs.nil
             pkgs.zellij
