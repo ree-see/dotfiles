@@ -47,6 +47,7 @@
             pkgs.zellij
             pkgs._1password-cli
             pkgs.zoxide
+            pkgs.lazygit
           ];
 
           fonts.packages = [
