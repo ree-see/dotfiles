@@ -27,7 +27,7 @@ def create_left_prompt [] {
     }
     
     # Combine into requested format: <username> <pwd> <git branch> >
-    $"($username_color)($username)($reset_color) ($path_color)($dir)($reset_color)($git_segment) > "
+    $"($username_color)($username)($reset_color) ($path_color)($dir)($reset_color)($git_segment) "
 }
 
 def create_right_prompt [] {

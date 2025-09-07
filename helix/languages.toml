@@ -3,11 +3,11 @@ name = "python"
 formatter = { command = "ruff", args = ["format", "--line-length", "88", "-"] }
 auto-format = true
 
-[language-server.rust-analyzer.config.check]
-command = "clippy"
-
-[language-server.rust-analyzer.config.cargo]
-features = "all"
+[[language]]
+name = "rust"
+language-servers = [ "rust-analyzer"]
+auto-format = true
+text-width = 85
 
 [[language]]
 name = "ruby"

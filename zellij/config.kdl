@@ -281,7 +281,7 @@ web_client {
 //   - true
 //   - false (Default)
 // 
-// simplified_ui true
+simplified_ui true
  
 // Choose the theme that is specified in the themes section.
 // Default: default
@@ -296,7 +296,7 @@ theme "tokyonight"
 // Choose the path to the default shell that zellij will use for opening new panes
 // Default: $SHELL
 // 
-// default_shell "fish"
+default_shell "fish"
  
 // Choose the path to override cwd that zellij will use for opening new panes
 // 
@@ -348,7 +348,7 @@ theme "tokyonight"
 //   - detach (Default)
 //   - quit
 // 
-// on_force_close "quit"
+on_force_close "quit"
  
 // Configure the scroll back buffer size
 // This is the number of lines zellij stores for each pane in the scroll back
@@ -387,7 +387,7 @@ theme "tokyonight"
  
 // Path to the default editor to use to edit pane scrollbuffer
 // Default: $EDITOR or $VISUAL
-// scrollback_editor "/usr/bin/vim"
+scrollback_editor "run/current-system/sw/bin/hx"
  
 // A fixed name to always give the Zellij session.
 // Consider also setting `attach_to_session true,`
