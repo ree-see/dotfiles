@@ -1,5 +1,11 @@
 # Agent Guidelines for .config Repository
 
+## Desired Features
+[] Replace apple menu bar with sketchy bar
+[] start using aerospace
+[] yazi integration to helix
+[] hotreloading in helix
+
 ## Repository Structure
 This is a dotfiles configuration repository containing config files for fish shell, helix editor, zellij terminal multiplexer, ghostty terminal, nix-darwin system flake, and opencode.
 
@@ -32,3 +38,30 @@ This is a dotfiles configuration repository containing config files for fish she
 - Fish functions should handle errors gracefully with status checks
 - Nix configurations should use proper error handling and fallbacks
 - No specific error handling patterns for config files
+
+## Roadmap: SketchyBar Implementation
+### Goal: Replace Apple menu bar with SketchyBar using Lua plugins
+
+1. **Add SketchyBar to nix/flake.nix** - Include sketchybar package in environment.systemPackages
+2. **Create sketchybar/ directory** - Set up configuration structure with sketchybarrc and plugins/
+3. **Configure Lua plugins** - Implement modular Lua-based configuration for bar items
+4. **System integration** - Add LaunchAgent plist and disable macOS menu bar via system defaults
+5. **Testing** - Verify bar loads correctly and all plugins function as expected
+
+
+[✓] Add SketchyBar package to nix/flake.nix environment.systemPackages
+[✓] Create sketchybar/ directory structure with sketchybarrc and plugins/ subdirectory
+[✓] Initialize git repository in sketchybar/ directory for version control
+[✓] Research SketchyBar Lua plugin configuration patterns and examples
+[✓] Create main sketchybarrc configuration file with fish shell
+[✓] Implement focused app display plugin (left side)
+[✓] Implement CPU percentage plugin
+[✓] Implement 1Password integration plugin
+[✓] Implement battery percentage plugin
+[✓] Implement expandable network manager (WiFi/Bluetooth)
+[✓] Implement clock plugin with 24hr format and 'Sun Sep 07 hh:mm' date format
+[✓] Fix critical and potential issues from code review
+[ ] Test development branch extensively before merging to main
+[ ] Add macOS system defaults to disable built-in menu bar in nix/flake.nix
+[ ] Create LaunchAgent plist for auto-starting SketchyBar
+[ ] Deploy to production: merge development branch to main
