@@ -13,7 +13,7 @@ function bar --description 'Manage SketchyBar - reload, kill, start, or revert t
             
         case start s
             echo "🚀 Starting SketchyBar..."
-            /Users/reesee/.config/sketchybar/start_two_pill.sh
+            cd /Users/reesee/.config/sketchybar && ./start_two_pill.sh
             
         case apple revert a
             echo "🍎 Reverting to Apple menu bar..."

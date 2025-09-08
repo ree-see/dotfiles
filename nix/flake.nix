@@ -50,6 +50,8 @@
             pkgs.lazygit
             pkgs.sketchybar
             pkgs.lua
+            pkgs.aerospace
+            pkgs.yazi
           ];
 
           fonts.packages = [
