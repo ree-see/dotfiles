@@ -49,6 +49,7 @@
             pkgs.zoxide
             pkgs.lazygit
             pkgs.sketchybar
+            pkgs.lua
           ];
 
           fonts.packages = [
@@ -102,7 +103,7 @@
 
           # macOS system settings
           system.defaults = {
-
+            NSGlobalDomain._HIHideMenuBar = true;
           };
           # Necessary for using flakes on this system.
           nix.settings.experimental-features = "nix-command flakes";

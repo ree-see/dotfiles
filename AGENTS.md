@@ -61,7 +61,10 @@ This is a dotfiles configuration repository containing config files for fish she
 [✓] Implement expandable network manager (WiFi/Bluetooth)
 [✓] Implement clock plugin with 24hr format and 'Sun Sep 07 hh:mm' date format
 [✓] Fix critical and potential issues from code review
-[ ] Test development branch extensively before merging to main
-[ ] Add macOS system defaults to disable built-in menu bar in nix/flake.nix
-[ ] Create LaunchAgent plist for auto-starting SketchyBar
+[✓] Test development branch extensively before merging to main
+[✓] Add macOS system defaults to disable built-in menu bar in nix/flake.nix
+[✓] Grant Accessibility permissions to SketchyBar for menu bar control
+[✓] Create shell-based SketchyBar configuration as fallback for Lua issues
+[✓] Create startup script for auto-starting SketchyBar with proper configuration
+[ ] OPTIONAL: Fix SbarLua integration for proper Lua plugin support
 [ ] Deploy to production: merge development branch to main
