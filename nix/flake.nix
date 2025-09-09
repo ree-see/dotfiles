@@ -48,9 +48,7 @@
             pkgs._1password-cli
             pkgs.zoxide
             pkgs.lazygit
-            pkgs.sketchybar
             pkgs.lua
-            pkgs.aerospace
             pkgs.yazi
           ];
 
