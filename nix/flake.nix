@@ -105,7 +105,7 @@
 
           # macOS system settings
           system.defaults = {
-            NSGlobalDomain._HIHideMenuBar = true;
+            # NSGlobalDomain._HIHideMenuBar = true;
           };
           # Necessary for using flakes on this system.
           nix.settings.experimental-features = "nix-command flakes";
