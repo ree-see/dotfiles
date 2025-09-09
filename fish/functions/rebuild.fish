@@ -1,18 +1,25 @@
 function rebuild --description "Advanced nix-darwin configuration management"
-    set -l operation "switch"
+    set -l operation switch
     set -l flake_path ~/.config/nix#macbook
     set -l config_dir ~/.config
     set -l auto_commit false
     set -l show_diff false
     set -l backup_gen false
-    
+    set -l commit_msg ""
+
     # Parse arguments
-    for arg in $argv
+    set -l i 1
+    while test $i -le (count $argv)
+        set -l arg $argv[$i]
         switch $arg
             case build switch test
                 set operation $arg
             case --commit -c
                 set auto_commit true
+                if test $i -lt (count $argv); and not string match -q -- '--*' $argv[(math $i + 1)]
+                    set i (math $i + 1)
+                    set commit_msg $argv[$i]
+                end
             case --diff -d
                 set show_diff true
             case --backup -b
@@ -22,7 +29,7 @@ function rebuild --description "Advanced nix-darwin configuration management"
                 echo ""
                 echo "Operations:"
                 echo "  switch  - Build and activate (default)"
-                echo "  build   - Build without activating" 
+                echo "  build   - Build without activating"
                 echo "  test    - Build and test activation"
                 echo ""
                 echo "Options:"
@@ -41,32 +48,33 @@ function rebuild --description "Advanced nix-darwin configuration management"
                 echo "Unknown option: $arg"
                 return 1
         end
+        set i (math $i + 1)
     end
-    
+
     # Change to config directory
     pushd $config_dir
-    
+
     # Check git status
     if git rev-parse --git-dir >/dev/null 2>&1
         set -l git_status (git status --porcelain)
         if test -n "$git_status"
             echo "🔄 Git tree is dirty:"
             git status --short
-            
+
             if test $auto_commit = true
                 echo "📝 Auto-committing changes..."
                 git add .
-                set -l commit_msg "nix: update configuration before rebuild"
+                set -l commit_msg "$commit_msg"
                 git commit -m "$commit_msg"
                 echo "✅ Changes committed"
             else
-                echo "💡 Use --commit to auto-commit changes"
+                echo "nix: update config before rebuild"
             end
         else
             echo "✅ Git tree is clean"
         end
     end
-    
+
     # Show diff if requested
     if test $show_diff = true
         echo "📊 Configuration changes:"
@@ -78,7 +86,7 @@ function rebuild --description "Advanced nix-darwin configuration management"
             echo "Install nix-diff for detailed comparison: nix-env -iA nixpkgs.nix-diff"
         end
     end
-    
+
     # Backup current generation if requested
     if test $backup_gen = true
         set -l current_gen (readlink /nix/var/nix/profiles/system)
@@ -86,18 +94,18 @@ function rebuild --description "Advanced nix-darwin configuration management"
         # The system automatically keeps generations, so we just note it
         echo "Current generation backed up (accessible via nix-env --list-generations)"
     end
-    
+
     # Show current generation info
     echo "📦 Current generation:"
     sudo darwin-rebuild --list-generations | tail -n 1
-    
+
     # Run the rebuild
     echo "🔨 Running: sudo darwin-rebuild $operation --flake $flake_path"
     if sudo darwin-rebuild $operation --flake $flake_path
         echo "✅ Rebuild completed successfully!"
-        
+
         # Show what changed
-        if test $operation = "switch"
+        if test $operation = switch
             echo "🎯 New generation active:"
             sudo darwin-rebuild --list-generations | tail -n 1
         end
@@ -108,6 +116,6 @@ function rebuild --description "Advanced nix-darwin configuration management"
         popd
         return $exit_code
     end
-    
+
     popd
 end

@@ -50,6 +50,7 @@
             pkgs.lazygit
             pkgs.lua
             pkgs.yazi
+            pkgs.wezterm
           ];
 
           fonts.packages = [
