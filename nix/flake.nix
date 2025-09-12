@@ -50,7 +50,6 @@
             pkgs.lazygit
             pkgs.lua
             pkgs.yazi
-            pkgs.wezterm
           ];
 
           fonts.packages = [
@@ -68,6 +67,7 @@
             casks = [
               "raycast"
               "ghostty"
+              "wezterm"
             ];
             masApps = {
               # "yoink" = 457622435;

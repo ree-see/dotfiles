@@ -1,6 +1,0 @@
-command = /run/current-system/sw/bin/fish
-font-size = 12
-font-family = JetBrains Mono
-background-opacity = 0.95
-background-blur-radius = 20
-theme = tokyonight_night
