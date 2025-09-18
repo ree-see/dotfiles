@@ -1,2 +1,7 @@
+# Custom Helix Theme
+# A minimal theme that inherits from onedark with transparent background
+# This allows the terminal's background to show through for better integration
+# with terminal themes and background images
+
 inherits = "onedark"
-"ui.background" = {}
+"ui.background" = {}  # Transparent background

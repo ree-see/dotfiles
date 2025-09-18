@@ -1,12 +1,30 @@
+# Helix Editor Configuration
+# Main configuration file for the Helix text editor
+#
+# Key features:
+# - Custom theme with transparent background
+# - Relative line numbers for efficient navigation
+# - Yazi file manager integration (Ctrl+Y)
+# - Inline diagnostics configuration
+# - LSP message display
+#
+# See languages.toml for language-specific settings
+
 theme = "mytheme"
 
 [editor]
+# Display relative line numbers for easier navigation with motions
 line-number = "relative"
+
+# Show ruler at column 85 for code formatting guidelines
 rulers = [85]
+
+# Show diagnostics at end of line as hints
 end-of-line-diagnostics = "hint"
 
 
 [editor.lsp]
+# Display LSP server messages for debugging and status updates
 display-messages = true
 
 [editor.inline-diagnostics]
@@ -16,10 +34,13 @@ cursor-line = "warning"
 other-lines = "disable"
 
 [keys.normal]
+# Yazi file manager integration
+# Ctrl+Y opens Yazi file manager and allows file selection
+# Uses a temporary file to communicate the selected file back to Helix
 C-y = [
-  ':sh rm -f /tmp/unique-file',
-  ':insert-output yazi %{buffer_name} --chooser-file=/tmp/unique-file',
-  ':insert-output echo "\x1b[?1049h\x1b[?2004h" > /dev/tty',
-  ':open %sh{cat /tmp/unique-file}',
-  ':redraw',
+  ':sh rm -f /tmp/unique-file',  # Clean up any existing temp file
+  ':insert-output yazi %{buffer_name} --chooser-file=/tmp/unique-file',  # Launch Yazi
+  ':insert-output echo "\x1b[?1049h\x1b[?2004h" > /dev/tty',  # Terminal escape sequences
+  ':open %sh{cat /tmp/unique-file}',  # Open the selected file
+  ':redraw',  # Refresh the display
 ]

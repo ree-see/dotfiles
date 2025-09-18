@@ -1,3 +1,20 @@
+# Advanced nix-darwin configuration management function
+# Provides a comprehensive interface for building and managing nix-darwin configurations
+#
+# Features:
+# - Automatic git status checking and optional commits
+# - Configuration diffing
+# - Generation backup and management
+# - Multiple operation modes (switch, build, test)
+# - Comprehensive error handling and feedback
+#
+# Usage: rebuild [OPERATION] [OPTIONS]
+# Examples:
+#   rebuild                    # Quick switch (default)
+#   rebuild --commit "message" # Commit changes and switch
+#   rebuild build --diff       # Build and show what changed
+#   rebuild test --backup      # Test with backup
+
 function rebuild --description "Advanced nix-darwin configuration management"
     set -l operation switch
     set -l flake_path ~/.config/nix#macbook
@@ -7,7 +24,7 @@ function rebuild --description "Advanced nix-darwin configuration management"
     set -l backup_gen false
     set -l commit_msg ""
 
-    # Parse arguments
+    # Parse command line arguments
     set -l i 1
     while test $i -le (count $argv)
         set -l arg $argv[$i]
@@ -51,10 +68,10 @@ function rebuild --description "Advanced nix-darwin configuration management"
         set i (math $i + 1)
     end
 
-    # Change to config directory
+    # Change to config directory for git operations and flake access
     pushd $config_dir
 
-    # Check git status
+    # Check git repository status and handle dirty tree
     if git rev-parse --git-dir >/dev/null 2>&1
         set -l git_status (git status --porcelain)
         if test -n "$git_status"
@@ -75,7 +92,7 @@ function rebuild --description "Advanced nix-darwin configuration management"
         end
     end
 
-    # Show diff if requested
+    # Show configuration differences if requested
     if test $show_diff = true
         echo "📊 Configuration changes:"
         if command -v nix-diff >/dev/null
@@ -87,7 +104,7 @@ function rebuild --description "Advanced nix-darwin configuration management"
         end
     end
 
-    # Backup current generation if requested
+    # Backup current system generation if requested
     if test $backup_gen = true
         set -l current_gen (readlink /nix/var/nix/profiles/system)
         echo "💾 Backing up current generation: $current_gen"
@@ -99,12 +116,12 @@ function rebuild --description "Advanced nix-darwin configuration management"
     echo "📦 Current generation:"
     sudo darwin-rebuild --list-generations | tail -n 1
 
-    # Run the rebuild
+    # Execute the nix-darwin rebuild operation
     echo "🔨 Running: sudo darwin-rebuild $operation --flake $flake_path"
     if sudo darwin-rebuild $operation --flake $flake_path
         echo "✅ Rebuild completed successfully!"
 
-        # Show what changed
+        # Display the new active generation for switch operations
         if test $operation = switch
             echo "🎯 New generation active:"
             sudo darwin-rebuild --list-generations | tail -n 1

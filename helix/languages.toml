@@ -1,19 +1,36 @@
+# Helix Language Configuration
+# Language-specific settings for formatters, language servers, and auto-formatting
+#
+# This configuration provides comprehensive language support for:
+# - Python (Ruff formatter)
+# - Rust (rust-analyzer LSP)
+# - Ruby (RuboCop formatter)
+# - Web technologies (HTML, CSS, JavaScript/TypeScript with Prettier)
+# - Configuration files (JSON, YAML, Markdown)
+# - System languages (Nix, Lua, Fish)
+#
+# All languages have auto-formatting enabled where appropriate
+
+# Python with Ruff formatter (fast Python linter and formatter)
 [[language]]
 name = "python"
 formatter = { command = "ruff", args = ["format", "--line-length", "88", "-"] }
 auto-format = true
 
+# Rust with rust-analyzer LSP and auto-formatting
 [[language]]
 name = "rust"
 language-servers = [ "rust-analyzer"]
 auto-format = true
-text-width = 85
+text-width = 85  # Match ruler setting in config.toml
 
+# Ruby with RuboCop formatter via bundler
 [[language]]
 name = "ruby"
 formatter = { command = "bundle", args = ["exec", "rubocop", "--stdin", "foo.rb", "-a", "--stderr", "--fail-level", "fatal"] }
 auto-format = true
 
+# Web markup and styling languages with Prettier
 [[language]]
 name = "html"
 formatter = { command = 'prettier', args = ["--parser", "html"] }
@@ -24,6 +41,7 @@ name = "css"
 formatter = { command = 'prettier', args = ["--parser", "css"] }
 auto-format = true
 
+# Fish shell with language server support
 [[language]]
 name = "fish"
 language-servers = [ "fish-lsp" ]
@@ -32,15 +50,17 @@ language-servers = [ "fish-lsp" ]
 command = "fish-lsp"
 args= ["start"]
 
+# Nix configuration language with auto-formatting
 [[language]]
 name = "nix"
 auto-format = true
 
+# Lua scripting language with language server
 [[language]]
 name = "lua"
 language-servers = [ "lua-language-server" ]
 
-# React Native & JavaScript/TypeScript
+# JavaScript/TypeScript ecosystem with comprehensive tooling
 [[language]]
 name = "javascript"
 language-servers = ["typescript-language-server", "eslint"]
@@ -83,7 +103,7 @@ auto-format = true
  formatter = { command = "prettier", args = ["--parser", "markdown"] }
  auto-format = true
 
-# lannguage servers configuration
+# Language server configurations
 [language-server.typescript-language-server]
 command = "typescript-language-server"
 args = ["--stdio"]

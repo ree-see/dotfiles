@@ -1,2 +1,13 @@
+# Yazi File Manager Configuration
+# Terminal-based file manager with vim-like keybindings
+#
+# Key features:
+# - Shows hidden files by default for development work
+# - Integrates with Helix editor via Ctrl+Y binding
+# - Fast file navigation and preview
+# - Miller column layout for intuitive browsing
+#
+# Yazi is used as the file picker in Helix editor through custom keybinding
+
 [mgr]
-show_hidden = true
+show_hidden = true  # Show hidden files and directories by default

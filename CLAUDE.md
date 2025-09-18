@@ -5,22 +5,25 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Common Development Commands
 
 ### Nix Darwin System Management
+
 - `rebuild` - Build and activate nix-darwin configuration (default: switch)
-- `rebuild build` - Build without activating 
+- `rebuild build` - Build without activating
 - `rebuild --commit` - Auto-commit changes before rebuilding
 - `rebuild --diff` - Show configuration diff
 - `rollback` - Revert to previous nix-darwin generation
 - `nixstatus` - Check system status and configuration
 
 ### Configuration Management
-- `cfg <tool>` - Edit configuration files for various tools
-  - `cfg helix` - Edit Helix editor config
-  - `cfg nix` - Edit nix configuration
-  - `cfg fish` - Edit Fish shell config
-  - `cfg wezterm` - Edit WezTerm terminal config
-  - `cfg zellij` - Edit Zellij terminal multiplexer config
+
+- `config <tool>` - Edit configuration files for various tools
+  - `config helix` - Edit Helix editor config
+  - `config nix` - Edit nix configuration
+  - `config fish` - Edit Fish shell config
+  - `config wezterm` - Edit WezTerm terminal config
+  - `config zellij` - Edit Zellij terminal multiplexer config
 
 ### Development Utilities
+
 - `mkcd <directory>` - Create directory and cd into it
 - `mkcd dir1 dir2 dir3` - Create multiple directories, cd to last
 
@@ -65,8 +68,9 @@ The repository uses **Fish shell** as the primary shell with configuration manag
 ### Configuration Management Pattern
 
 The system follows a modular configuration pattern where:
+
 1. Each tool has its own configuration directory
-2. Fish functions provide configuration management via `cfg` command
+2. Fish functions provide configuration management via `config` command
 3. System rebuilds are managed through custom `rebuild` command with safety features
 4. All changes can be rolled back using generation management
 
