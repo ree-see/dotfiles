@@ -6,6 +6,11 @@
     nix-darwin.url = "github:nix-darwin/nix-darwin/master";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
 
+    helix-custom = {
+      url = "path:/Users/reesee/dev/helix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
       flake = false;
@@ -20,6 +25,7 @@
     inputs@{
       self,
       nix-darwin,
+      helix-custom,
       homebrew-core,
       homebrew-cask,
       nixpkgs,
@@ -38,10 +44,9 @@
           # List packages installed in system profile. To search by name, run:
           # $ nix-env -qaP | grep wget
           environment.systemPackages = [
-            pkgs.helix
+            helix-custom.packages.${pkgs.system}.default
             pkgs.zellij
             pkgs.fish
-            pkgs.nushell
             pkgs.mkalias
             pkgs.nil
             pkgs.zellij
@@ -50,8 +55,21 @@
             pkgs.lazygit
             pkgs.lua
             pkgs.yazi
-          ];
+            pkgs.yarn
+            pkgs.nodejs
+            pkgs.watchman
+            pkgs.claude-code
 
+            # React Native/Expo development tools
+            pkgs.nodePackages.typescript-language-server
+            pkgs.nodePackages.vscode-langservers-extracted # Includes eslint-language-server
+            pkgs.nodePackages.prettier
+            # pkgs.nodePackages."@expo/cli"
+
+            # Ruby development
+            pkgs.ruby
+            pkgs.rubyPackages.solargraph
+          ];
           fonts.packages = [
             pkgs.nerd-fonts.jetbrains-mono
           ];
@@ -60,7 +78,6 @@
             enable = true;
             brews = [
               "mas"
-              "sst/tap/opencode"
               "postgresql"
               "rbenv"
             ];
@@ -72,6 +89,7 @@
             masApps = {
               # "yoink" = 457622435;
               "magnet" = 441258766;
+              "xcode" = 497799835;
             };
             onActivation.cleanup = "zap";
             onActivation.autoUpdate = true;

@@ -1,5 +1,23 @@
 {
   "nodes": {
+    "helix-custom": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": "rust-overlay"
+      },
+      "locked": {
+        "lastModified": 1758235096,
+        "narHash": "sha256-nAjdo/ButzpBkUB29gRinNXV3P6CRhgwK4DgaiRZ5NE=",
+        "path": "/Users/reesee/dev/helix",
+        "type": "path"
+      },
+      "original": {
+        "path": "/Users/reesee/dev/helix",
+        "type": "path"
+      }
+    },
     "homebrew-cask": {
       "flake": false,
       "locked": {
@@ -71,10 +89,32 @@
     },
     "root": {
       "inputs": {
+        "helix-custom": "helix-custom",
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
         "nix-darwin": "nix-darwin",
         "nixpkgs": "nixpkgs"
+      }
+    },
+    "rust-overlay": {
+      "inputs": {
+        "nixpkgs": [
+          "helix-custom",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1740623427,
+        "narHash": "sha256-3SdPQrZoa4odlScFDUHd4CUPQ/R1gtH4Mq9u8CBiK8M=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "d342e8b5fd88421ff982f383c853f0fc78a847ab",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
       }
     }
   },

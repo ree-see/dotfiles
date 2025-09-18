@@ -39,3 +39,63 @@ auto-format = true
 [[language]]
 name = "lua"
 language-servers = [ "lua-language-server" ]
+
+# React Native & JavaScript/TypeScript
+[[language]]
+name = "javascript"
+language-servers = ["typescript-language-server", "eslint"]
+formatter = { command = "prettier", args = ["--parser", "javascript"] }
+auto-format = true
+
+[[language]]
+name = "typescript"
+language-servers = ["typescript-language-server", "eslint"]
+formatter = { command = "prettier", args = ["--parser", "typescript"] }
+auto-format = true
+
+[[language]]
+name = "jsx"
+language-servers = ["typescript-language-server", "eslint"]
+formatter = { command = "prettier", args = ["--parser", "babel"] }
+auto-format = true
+
+[[language]]
+name = "tsx"
+language-servers = ["typescript-language-server", "eslint"]
+formatter = { command = "prettier", args = ["--parser", "typescript"] }
+auto-format = true
+
+# JSON for package.json and config files
+ [[language]]
+ name = "json"
+ formatter = { command = "prettier", args = ["--parser", "json"] }
+ auto-format = true
+
+ # YAML for CI/CD and config files
+ [[language]]
+ name = "yaml"
+ formatter = { command = "prettier", args = ["--parser", "yaml"] }
+ auto-format = true
+
+ # Markdown for documentation
+ [[language]]
+ name = "markdown"
+ formatter = { command = "prettier", args = ["--parser", "markdown"] }
+ auto-format = true
+
+# lannguage servers configuration
+[language-server.typescript-language-server]
+command = "typescript-language-server"
+args = ["--stdio"]
+config.preferences.quoteStyle = "single"
+config.preferences.includeCompletionsForModuleExports = true
+
+[language-server.eslint]
+command = "vscode-eslint-language-server"
+args = ["--stdio"]
+config.validate = "on"
+config.experimental.useFlatConfig = false
+config.rulesCustomizations = []
+config.run = "onType"
+config.problems.shortenToSingleLine = false
+config.nodePath = ""

@@ -11,9 +11,9 @@ display-messages = true
 
 [editor.inline-diagnostics]
 # Show inline diagnostics when the cursor is on the line
-cursor-line = "warning" 
+cursor-line = "warning"
 # Don't expand diagnostics unless the cursor is on the line
-other-lines = "disable" 
+other-lines = "disable"
 
 [keys.normal]
 C-y = [
