@@ -22,7 +22,6 @@ rulers = [85]
 # Show diagnostics at end of line as hints
 end-of-line-diagnostics = "hint"
 
-
 [editor.lsp]
 # Display LSP server messages for debugging and status updates
 display-messages = true

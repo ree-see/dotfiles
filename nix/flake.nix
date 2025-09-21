@@ -2,7 +2,7 @@
   description = "MacOS nix-darwin system flake";
 
   # This flake provides a declarative nix-darwin configuration for macOS
-  # 
+  #
   # Key features:
   # - Custom Helix editor build from local development path
   # - Comprehensive development environment with Node.js, Ruby, and development tools
@@ -25,7 +25,7 @@
     # Custom Helix editor build from local development repository
     # This allows using a custom-built version with personal modifications
     helix-custom = {
-      url = "path:/Users/reesee/dev/helix";
+      url = "github:ree-see/helix/main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -65,27 +65,29 @@
           # To search for packages: nix search nixpkgs <package-name>
           environment.systemPackages = [
             # Core development tools
-            helix-custom.packages.${pkgs.system}.default  # Custom Helix editor build
-            pkgs.fish          # Fish shell
-            pkgs.zellij        # Terminal multiplexer
-            pkgs.yazi          # Terminal file manager
-            pkgs.lazygit       # Git TUI
-            pkgs.zoxide        # Smart cd replacement
-            pkgs.claude-code   # Claude Code CLI
-            
+            helix-custom.packages.${pkgs.system}.default # Custom Helix editor build
+            pkgs.fish # Fish shell
+            pkgs.zellij # Terminal multiplexer
+            pkgs.yazi # Terminal file manager
+            pkgs.lazygit # Git TUI
+            pkgs.zoxide # Smart cd replacement
+            pkgs.claude-code # Claude Code CLI
+            pkgs.gh
+
             # System utilities
-            pkgs.mkalias       # Create macOS aliases
+            pkgs.mkalias # Create macOS aliases
             pkgs._1password-cli # 1Password CLI
-            
+
             # Development languages and runtimes
-            pkgs.nodejs        # Node.js runtime
-            pkgs.yarn          # Node.js package manager
-            pkgs.ruby          # Ruby language
-            pkgs.lua           # Lua scripting language
-            pkgs.nil           # Nix language server
-            
+            pkgs.nodejs # Node.js runtime
+            pkgs.yarn # Node.js package manager
+            pkgs.ruby # Ruby language
+            pkgs.lua # Lua scripting language
+            pkgs.nil # Nix language server
+            pkgs.uv # python package manager
+
             # Development monitoring
-            pkgs.watchman      # File watching service
+            pkgs.watchman # File watching service
 
             # JavaScript/TypeScript development tools
             pkgs.nodePackages.typescript-language-server
@@ -94,42 +96,42 @@
             # pkgs.nodePackages."@expo/cli"  # Expo CLI for React Native
 
             # Ruby development tools
-            pkgs.rubyPackages.solargraph   # Ruby language server
+            pkgs.rubyPackages.solargraph # Ruby language server
           ];
           # System fonts installed via Nix
           fonts.packages = [
-            pkgs.nerd-fonts.jetbrains-mono  # JetBrains Mono with Nerd Font icons
+            pkgs.nerd-fonts.jetbrains-mono # JetBrains Mono with Nerd Font icons
           ];
 
           # Homebrew integration for applications not available in nixpkgs
           homebrew = {
             enable = true;
-            
+
             # Command-line tools via Homebrew
             brews = [
-              "mas"          # Mac App Store CLI
-              "postgresql"   # PostgreSQL database
-              "rbenv"        # Ruby version manager
+              "mas" # Mac App Store CLI
+              "postgresql" # PostgreSQL database
+              "rbenv" # Ruby version manager
             ];
-            
+
             # GUI applications via Homebrew Cask
             casks = [
-              "raycast"      # Productivity launcher
-              "ghostty"      # GPU-accelerated terminal
-              "wezterm"      # Advanced terminal emulator
+              "raycast" # Productivity launcher
+              "ghostty" # GPU-accelerated terminal
+              "wezterm" # Advanced terminal emulator
             ];
-            
+
             # Mac App Store applications
             masApps = {
               # "yoink" = 457622435;     # Clipboard manager (disabled)
-              "magnet" = 441258766;      # Window management
-              "xcode" = 497799835;       # Apple's IDE
+              "magnet" = 441258766; # Window management
+              "xcode" = 497799835; # Apple's IDE
             };
-            
+
             # Homebrew maintenance settings
-            onActivation.cleanup = "zap";      # Remove unlisted packages
-            onActivation.autoUpdate = true;    # Update Homebrew itself
-            onActivation.upgrade = true;       # Upgrade installed packages
+            onActivation.cleanup = "zap"; # Remove unlisted packages
+            onActivation.autoUpdate = true; # Update Homebrew itself
+            onActivation.upgrade = true; # Upgrade installed packages
           };
 
           # Custom activation script to link Nix applications to /Applications
@@ -156,18 +158,18 @@
             '';
 
           # Security configuration
-          security.pam.services.sudo_local.touchIdAuth = true;  # Enable Touch ID for sudo
+          security.pam.services.sudo_local.touchIdAuth = true; # Enable Touch ID for sudo
 
           # macOS system preferences
           system.defaults = {
             # NSGlobalDomain._HIHideMenuBar = true;  # Hide menu bar (disabled)
           };
-          
+
           # Nix configuration
-          nix.settings.experimental-features = "nix-command flakes";  # Enable flakes and new CLI
+          nix.settings.experimental-features = "nix-command flakes"; # Enable flakes and new CLI
 
           # Shell configuration
-          programs.fish.enable = true;  # Enable Fish shell system-wide
+          programs.fish.enable = true; # Enable Fish shell system-wide
 
           # Set Git commit hash for darwin-version.
           system.configurationRevision = self.rev or self.dirtyRev or null;

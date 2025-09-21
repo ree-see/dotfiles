@@ -3,20 +3,20 @@
 # 
 # Usage: config <app> [file]
 # Examples:
-#   config helix        # Edit main Helix config
-#   config nix          # Edit nix flake
-#   config fish         # Edit Fish config
-#   config wezterm      # Edit WezTerm config
-#   config as           # Edit Aerospace config (alias)
-#   config gh           # Edit Ghostty config (alias)
+#   config helix | hx      # Edit main Helix config
+#   config nix             # Edit nix flake
+#   config fish            # Edit Fish config
+#   config wezterm | wez   # Edit WezTerm config
+#   config aerospace | as  # Edit Aerospace config (alias)
 
 # App aliases for convenience
 set --global as aerospace
-set --global gh ghostty
+set --global wez wezterm
+set --global hx helix
 
 function config --description 'Edit configuration files with helix editor'
     set -l config_dir ~/.config
-    
+
     # Show usage and available configurations if no arguments provided
     if test (count $argv) -eq 0
         echo "Usage: config <app> [file]"
@@ -30,23 +30,25 @@ function config --description 'Edit configuration files with helix editor'
         echo "Aliases: as (aerospace), gh (ghostty)"
         return 1
     end
-    
+
     set -l app $argv[1]
     set -l config_path $config_dir/$app
-    
+
     # Handle app aliases for convenience
     switch $app
         case as
             set config_path $config_dir/aerospace
-        case gh
-            set config_path $config_dir/ghostty
+        case wez
+            set config_path $config_dir/wezterm
+        case hx
+            set config_path $config_dir/helix
     end
-    
+
     if not test -e $config_path
         echo "Config not found: $config_path"
         return 1
     end
-    
+
     # If specific file provided, open that file directly
     if test (count $argv) -gt 1
         set -l file_path $config_path/$argv[2]
