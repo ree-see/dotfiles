@@ -57,9 +57,9 @@ function rollback --description "Rollback to previous nix-darwin generation"
     end
     
     echo "🔄 Rolling back to generation $target_gen..."
-    
+
     # Perform rollback
-    if sudo darwin-rebuild --rollback --switch-generation $target_gen
+    if sudo darwin-rebuild switch --switch-generation $target_gen
         echo "✅ Successfully rolled back to generation $target_gen"
         echo "📦 Active generation:"
         sudo darwin-rebuild --list-generations | tail -n 1

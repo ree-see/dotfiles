@@ -35,6 +35,11 @@ function rebuild --description "Advanced nix-darwin configuration management"
                     set i (math $i + 1)
                     set commit_msg $argv[$i]
                 end
+                if test -z "$commit_msg"
+                    echo "Error: --commit requires a commit message"
+                    echo "Usage: rebuild --commit \"your message\""
+                    return 1
+                end
             case --diff -d
                 set show_diff true
             case --backup -b

@@ -1,6 +1,6 @@
 # Configuration file editor function
 # Provides quick access to edit configuration files for various tools
-# 
+#
 # Usage: config <app> [file]
 # Examples:
 #   config helix | hx      # Edit main Helix config
@@ -8,11 +8,6 @@
 #   config fish            # Edit Fish config
 #   config wezterm | wez   # Edit WezTerm config
 #   config aerospace | as  # Edit Aerospace config (alias)
-
-# App aliases for convenience
-set --global as aerospace
-set --global wez wezterm
-set --global hx helix
 
 function config --description 'Edit configuration files with helix editor'
     set -l config_dir ~/.config

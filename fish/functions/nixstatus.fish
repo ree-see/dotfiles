@@ -77,7 +77,11 @@ function nixstatus --description "Show nix-darwin configuration status"
         echo "📦 Installed Nix Packages:"
         nix-env -q --installed | head -20
         set -l total_packages (nix-env -q --installed | wc -l | string trim)
-        echo "   ... and "(math $total_packages - 20)" more packages (total: $total_packages)"
+        if test $total_packages -gt 20
+            echo "   ... and "(math $total_packages - 20)" more packages (total: $total_packages)"
+        else
+            echo "   (total: $total_packages packages)"
+        end
     end
     
     # Show services if requested  
