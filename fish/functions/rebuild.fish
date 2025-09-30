@@ -6,14 +6,11 @@
 # - Configuration diffing
 # - Generation backup and management
 # - Multiple operation modes (switch, build, test)
+# - Flake input updates
 # - Comprehensive error handling and feedback
 #
 # Usage: rebuild [OPERATION] [OPTIONS]
-# Examples:
-#   rebuild                    # Quick switch (default)
-#   rebuild --commit "message" # Commit changes and switch
-#   rebuild build --diff       # Build and show what changed
-#   rebuild test --backup      # Test with backup
+# See: rebuild --help
 
 function rebuild --description "Advanced nix-darwin configuration management"
     set -l operation switch
@@ -45,26 +42,7 @@ function rebuild --description "Advanced nix-darwin configuration management"
             case --update -u
                 set update_flake true
             case --help -h
-                echo "Usage: rebuild [OPERATION] [OPTIONS]"
-                echo ""
-                echo "Operations:"
-                echo "  switch  - Build and activate (default)"
-                echo "  build   - Build without activating"
-                echo "  test    - Build and test activation"
-                echo ""
-                echo "Options:"
-                echo "  --commit, -c   - Auto-commit changes before rebuilding"
-                echo "  --diff, -d     - Show configuration diff"
-                echo "  --backup, -b   - Backup current generation"
-                echo "  --update, -u   - Update flake inputs before rebuilding"
-                echo "  --help, -h     - Show this help"
-                echo ""
-                echo "Examples:"
-                echo "  rebuild                  # Quick switch"
-                echo "  rebuild --update         # Update packages and switch"
-                echo "  rebuild --commit         # Commit changes and switch"
-                echo "  rebuild build --diff     # Build and show what changed"
-                echo "  rebuild test --backup    # Test with backup"
+                _rebuild_show_help
                 return 0
             case '*'
                 echo "Unknown option: $arg"
@@ -78,47 +56,18 @@ function rebuild --description "Advanced nix-darwin configuration management"
 
     # Update flake inputs if requested
     if test $update_flake = true
-        echo "🔄 Updating flake inputs..."
-        if nix flake update --flake $config_dir/nix
-            echo "✅ Flake inputs updated"
-        else
-            echo "❌ Failed to update flake inputs"
+        if not _rebuild_update_flake $config_dir
             popd
             return 1
         end
     end
 
     # Check git repository status and handle dirty tree
-    if git rev-parse --git-dir >/dev/null 2>&1
-        set -l git_status (git status --porcelain)
-        if test -n "$git_status"
-            echo "🔄 Git tree is dirty:"
-            git status --short
-
-            if test $auto_commit = true
-                echo "📝 Auto-committing changes..."
-                git add .
-                set -l commit_msg "$commit_msg"
-                git commit -m "$commit_msg"
-                echo "✅ Changes committed"
-            else
-                echo "nix: update config before rebuild"
-            end
-        else
-            echo "✅ Git tree is clean"
-        end
-    end
+    _rebuild_handle_git $auto_commit "$commit_msg"
 
     # Show configuration differences if requested
     if test $show_diff = true
-        echo "📊 Configuration changes:"
-        if command -v nix-diff >/dev/null
-            echo "Running nix-diff..."
-            # This would show differences between generations
-            nix-diff (readlink /nix/var/nix/profiles/system) (nix-build '<darwin>' -A system --no-out-link)
-        else
-            echo "Install nix-diff for detailed comparison: nix-env -iA nixpkgs.nix-diff"
-        end
+        _rebuild_show_diff
     end
 
     # Backup current system generation if requested

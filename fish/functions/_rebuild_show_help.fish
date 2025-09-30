@@ -1,0 +1,23 @@
+# Helper function for rebuild: Show help message
+function _rebuild_show_help
+    echo "Usage: rebuild [OPERATION] [OPTIONS]"
+    echo ""
+    echo "Operations:"
+    echo "  switch  - Build and activate (default)"
+    echo "  build   - Build without activating"
+    echo "  test    - Build and test activation"
+    echo ""
+    echo "Options:"
+    echo "  --commit, -c   - Auto-commit changes before rebuilding"
+    echo "  --diff, -d     - Show configuration diff"
+    echo "  --backup, -b   - Backup current generation"
+    echo "  --update, -u   - Update flake inputs before rebuilding"
+    echo "  --help, -h     - Show this help"
+    echo ""
+    echo "Examples:"
+    echo "  rebuild                  # Quick switch"
+    echo "  rebuild --update         # Update packages and switch"
+    echo "  rebuild --commit         # Commit changes and switch"
+    echo "  rebuild build --diff     # Build and show what changed"
+    echo "  rebuild test --backup    # Test with backup"
+end
