@@ -22,6 +22,7 @@ function rebuild --description "Advanced nix-darwin configuration management"
     set -l auto_commit false
     set -l show_diff false
     set -l backup_gen false
+    set -l update_flake false
     set -l commit_msg ""
 
     # Parse command line arguments
@@ -41,6 +42,8 @@ function rebuild --description "Advanced nix-darwin configuration management"
                 set show_diff true
             case --backup -b
                 set backup_gen true
+            case --update -u
+                set update_flake true
             case --help -h
                 echo "Usage: rebuild [OPERATION] [OPTIONS]"
                 echo ""
@@ -53,13 +56,15 @@ function rebuild --description "Advanced nix-darwin configuration management"
                 echo "  --commit, -c   - Auto-commit changes before rebuilding"
                 echo "  --diff, -d     - Show configuration diff"
                 echo "  --backup, -b   - Backup current generation"
+                echo "  --update, -u   - Update flake inputs before rebuilding"
                 echo "  --help, -h     - Show this help"
                 echo ""
                 echo "Examples:"
-                echo "  rebuild                # Quick switch"
-                echo "  rebuild --commit       # Commit changes and switch"
-                echo "  rebuild build --diff   # Build and show what changed"
-                echo "  rebuild test --backup  # Test with backup"
+                echo "  rebuild                  # Quick switch"
+                echo "  rebuild --update         # Update packages and switch"
+                echo "  rebuild --commit         # Commit changes and switch"
+                echo "  rebuild build --diff     # Build and show what changed"
+                echo "  rebuild test --backup    # Test with backup"
                 return 0
             case '*'
                 echo "Unknown option: $arg"
@@ -70,6 +75,18 @@ function rebuild --description "Advanced nix-darwin configuration management"
 
     # Change to config directory for git operations and flake access
     pushd $config_dir
+
+    # Update flake inputs if requested
+    if test $update_flake = true
+        echo "🔄 Updating flake inputs..."
+        if nix flake update --flake $config_dir/nix
+            echo "✅ Flake inputs updated"
+        else
+            echo "❌ Failed to update flake inputs"
+            popd
+            return 1
+        end
+    end
 
     # Check git repository status and handle dirty tree
     if git rev-parse --git-dir >/dev/null 2>&1

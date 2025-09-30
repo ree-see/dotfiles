@@ -8,14 +8,18 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1758235096,
-        "narHash": "sha256-nAjdo/ButzpBkUB29gRinNXV3P6CRhgwK4DgaiRZ5NE=",
-        "path": "/Users/reesee/dev/helix",
-        "type": "path"
+        "lastModified": 1758229658,
+        "narHash": "sha256-8DKRoQ48IEF+3kwv23sgVMPDpZGfMBE68XdF3GVrJNE=",
+        "owner": "ree-see",
+        "repo": "helix",
+        "rev": "ee46d8e0555c0d5202df9c6a14b3dcd3c6d3da77",
+        "type": "github"
       },
       "original": {
-        "path": "/Users/reesee/dev/helix",
-        "type": "path"
+        "owner": "ree-see",
+        "ref": "main",
+        "repo": "helix",
+        "type": "github"
       }
     },
     "homebrew-cask": {

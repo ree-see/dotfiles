@@ -67,9 +67,7 @@
             # Core development tools
             helix-custom.packages.${pkgs.system}.default # Custom Helix editor build
             pkgs.fish # Fish shell
-            pkgs.zellij # Terminal multiplexer
             pkgs.yazi # Terminal file manager
-            pkgs.lazygit # Git TUI
             pkgs.zoxide # Smart cd replacement
             pkgs.claude-code # Claude Code CLI
             pkgs.gh
@@ -81,7 +79,6 @@
             # Development languages and runtimes
             pkgs.nodejs # Node.js runtime
             pkgs.yarn # Node.js package manager
-            pkgs.ruby # Ruby language
             pkgs.lua # Lua scripting language
             pkgs.nil # Nix language server
             pkgs.uv # python package manager
@@ -93,11 +90,8 @@
             pkgs.nodePackages.typescript-language-server
             pkgs.nodePackages.vscode-langservers-extracted # Includes eslint-language-server
             pkgs.nodePackages.prettier
-            # pkgs.nodePackages."@expo/cli"  # Expo CLI for React Native
-
-            # Ruby development tools
-            pkgs.rubyPackages.solargraph # Ruby language server
           ];
+
           # System fonts installed via Nix
           fonts.packages = [
             pkgs.nerd-fonts.jetbrains-mono # JetBrains Mono with Nerd Font icons
@@ -110,22 +104,17 @@
             # Command-line tools via Homebrew
             brews = [
               "mas" # Mac App Store CLI
-              "postgresql" # PostgreSQL database
-              "rbenv" # Ruby version manager
             ];
 
             # GUI applications via Homebrew Cask
             casks = [
               "raycast" # Productivity launcher
-              "ghostty" # GPU-accelerated terminal
               "wezterm" # Advanced terminal emulator
             ];
 
             # Mac App Store applications
             masApps = {
-              # "yoink" = 457622435;     # Clipboard manager (disabled)
               "magnet" = 441258766; # Window management
-              "xcode" = 497799835; # Apple's IDE
             };
 
             # Homebrew maintenance settings
