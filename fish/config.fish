@@ -11,14 +11,21 @@
 if status is-interactive
     # Commands to run in interactive sessions can go here
 
-    # Initialize rbenv for Ruby development
-    if command -v rbenv >/dev/null
-        rbenv init - fish | source
+    # Initialize asdf for multiple runtime version management
+    if test -f /run/current-system/sw/share/asdf-vm/asdf.fish
+        source /run/current-system/sw/share/asdf-vm/asdf.fish
     end
 
-    # Autostart Zellij terminal multiplexer (currently disabled)
-    # Uncomment the line below to auto-start Zellij in new shells
-    # eval "$(zellij setup --generate-auto-start fish)"
+    # Add asdf shims to PATH (needed for Fish shell)
+    if test -d $HOME/.asdf/shims
+        fish_add_path -p $HOME/.asdf/shims
+    end
+
+    # Add PostgreSQL to PATH
+    if test -d /opt/homebrew/opt/postgresql@16/bin
+        fish_add_path /opt/homebrew/opt/postgresql@16/bin
+    end
+
     zoxide init fish | source
 end
 

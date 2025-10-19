@@ -76,6 +76,7 @@
             pkgs.mkalias # Create macOS aliases
             pkgs._1password-cli # 1Password CLI
             pkgs.pre-commit # Git pre-commit hook framework
+            pkgs.asdf-vm # Multiple runtime version manager
 
             # Development languages and runtimes
             pkgs.nodejs # Node.js runtime
@@ -105,6 +106,9 @@
             # Command-line tools via Homebrew
             brews = [
               "mas" # Mac App Store CLI
+              "postgresql@16" # PostgreSQL database
+              "libyaml" # YAML parser library for Ruby
+              "openssl@3" # OpenSSL for Ruby compilation
             ];
 
             # GUI applications via Homebrew Cask

@@ -22,10 +22,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Fast and lightweight**: Written in Rust
 
 ### Package Manager Strategy
-- **Nix**: System tools, development utilities, CLI apps (helix, fish, node, etc.)
-- **Homebrew**: GUI apps and services not in nixpkgs (WezTerm, Raycast, PostgreSQL)
+- **Nix**: System tools, development utilities, CLI apps (helix, fish, node, asdf, etc.)
+- **Homebrew**: GUI apps and services not in nixpkgs (WezTerm, Raycast, PostgreSQL, build dependencies)
+- **asdf**: Runtime version management (Ruby, Node, Python, etc.)
 - **pnpm**: Node.js packages (fast, disk-efficient, better monorepo support)
-- **Not using**: rbenv was removed in favor of potential future consolidation with asdf or Nix
+- **gem/bundle**: Ruby packages
 
 ## Common Development Commands
 
@@ -87,12 +88,39 @@ newproject api-server --type ruby --tdd    # Ruby with TDD
   - `pnpm dlx <package>` - Run package without installing (like npx)
 - **Benefits over npm/yarn**: Faster installs, uses less disk space, better monorepo support
 
+### Ruby Development
+
+- **Version manager**: `asdf` (installed via Nix)
+- **Current version**: Ruby 3.3.6 (latest stable)
+- **Common commands**:
+  - `asdf list all ruby` - List available Ruby versions
+  - `asdf install ruby <version>` - Install specific Ruby version
+  - `asdf global ruby <version>` - Set global Ruby version
+  - `asdf local ruby <version>` - Set project-specific Ruby version
+  - `ruby --version` - Check current Ruby version
+  - `gem install <gem>` - Install Ruby gems
+  - `bundle install` - Install gems from Gemfile
+
+**Project setup**:
+1. Create `.tool-versions` file in project root: `echo "ruby 3.3.6" > .tool-versions`
+2. asdf will automatically use this version when in the project directory
+
 ### Database Management
 
-- **PostgreSQL**: Installed via Homebrew (not managed by nix-darwin)
-- Check if running: `brew services list | grep postgresql`
-- Start: `brew services start postgresql@14`
-- Stop: `brew services stop postgresql@14`
+- **PostgreSQL**: PostgreSQL@16 installed via Homebrew
+- **Service management**:
+  - Check status: `brew services list | grep postgresql`
+  - Start: `brew services start postgresql@16`
+  - Stop: `brew services stop postgresql@16`
+  - Restart: `brew services restart postgresql@16`
+- **Connection**:
+  - Default port: 5432
+  - Default user: current system user (reesee)
+  - Socket: `/tmp/.s.PGSQL.5432`
+- **Common commands**:
+  - `psql postgres` - Connect to default database
+  - `createdb <name>` - Create new database
+  - `dropdb <name>` - Delete database
 
 ### 1Password CLI Integration
 
@@ -124,8 +152,8 @@ This is a **macOS nix-darwin configuration repository** that manages system pack
 
 The system uses **nix-darwin** with flakes for declarative package management. All packages and applications are defined in `/Users/reesee/.config/nix/flake.nix`:
 
-- **Nix packages**: Helix, Fish, Zellij, Node.js, pnpm, development tools
-- **Homebrew integration**: PostgreSQL, Raycast, WezTerm
+- **Nix packages**: Helix, Fish, Node.js, pnpm, asdf, pre-commit, development tools
+- **Homebrew integration**: PostgreSQL@16, build dependencies (libyaml, openssl), GUI apps
 - **Mac App Store apps**: Magnet
 
 ### Shell Environment
@@ -136,9 +164,10 @@ The repository uses **Fish shell** as the primary shell with configuration manag
 
 - **Editor**: Helix (`hx`) as primary editor
 - **Terminal**: WezTerm with advanced features (background images, GPU optimization)
-- **Multiplexer**: Zellij for session management
 - **File Manager**: Yazi for terminal-based file operations
 - **Version Control**: Lazygit for enhanced Git workflows
+- **Runtime Management**: asdf for Ruby, Node.js, Python versions
+- **Database**: PostgreSQL@16 for development databases
 
 ### Configuration Management Pattern
 

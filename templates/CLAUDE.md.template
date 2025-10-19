@@ -9,9 +9,9 @@
 **Purpose**: [Brief description of what this project does]
 
 **Tech Stack**:
-- Runtime: [e.g., Node.js via Nix, Ruby 3.3, etc.]
-- Framework: [e.g., React, Rails, Express, etc.]
-- Database: [e.g., PostgreSQL, SQLite, None]
+- Runtime: [e.g., Node.js via Nix, Ruby 3.3.6 via asdf, Python via asdf]
+- Framework: [e.g., React, Rails, Express, FastAPI, etc.]
+- Database: [e.g., PostgreSQL@16 (via Homebrew), SQLite, None]
 - Testing: [e.g., Jest, RSpec, pytest]
 
 ## Project Structure
@@ -29,21 +29,38 @@ PROJECT_NAME/
 
 ### Setup
 ```fish
-pnpm install            # Install dependencies (Node.js projects)
+# For Node.js projects
+pnpm install            # Install dependencies
+
+# For Ruby projects
+bundle install          # Install gems from Gemfile
+
+# For any project
 setup-precommit         # Set up pre-commit hooks for TDD
 ```
 
 ### Development
 ```fish
+# Node.js projects
 pnpm dev                # Start development server
 pnpm test               # Run tests
 pnpm build              # Build for production
+
+# Ruby projects
+rails server            # Start Rails server (if Rails)
+bundle exec rspec       # Run RSpec tests
+bundle exec rubocop     # Run code linter
 ```
 
 ### Testing (TDD Workflow)
 ```fish
+# Node.js
 pnpm test:watch         # Watch mode for TDD
 pnpm test:coverage      # Generate coverage report
+
+# Ruby
+bundle exec rspec --fd  # RSpec with detailed format
+bundle exec guard       # Auto-run tests on file changes
 ```
 
 ## Project-Specific Conventions
