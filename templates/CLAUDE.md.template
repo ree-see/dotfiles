@@ -1,0 +1,57 @@
+# PROJECT_NAME
+
+> This project follows the global development configuration at `/Users/reesee/.config/CLAUDE.md`.
+>
+> This file documents **project-specific** conventions and deviations only.
+
+## Project Overview
+
+**Purpose**: [Brief description of what this project does]
+
+**Tech Stack**:
+- Runtime: [e.g., Node.js via Nix, Ruby 3.3, etc.]
+- Framework: [e.g., React, Rails, Express, etc.]
+- Database: [e.g., PostgreSQL, SQLite, None]
+- Testing: [e.g., Jest, RSpec, pytest]
+
+## Project Structure
+
+```
+PROJECT_NAME/
+├── CLAUDE.md           # This file
+├── .pre-commit-config.yaml  # Pre-commit hooks (if TDD)
+├── package.json        # Node.js projects (use pnpm)
+├── README.md           # User-facing documentation
+└── [other directories]
+```
+
+## Development Commands
+
+### Setup
+```fish
+pnpm install            # Install dependencies (Node.js projects)
+setup-precommit         # Set up pre-commit hooks for TDD
+```
+
+### Development
+```fish
+pnpm dev                # Start development server
+pnpm test               # Run tests
+pnpm build              # Build for production
+```
+
+### Testing (TDD Workflow)
+```fish
+pnpm test:watch         # Watch mode for TDD
+pnpm test:coverage      # Generate coverage report
+```
+
+## Project-Specific Conventions
+
+[Document any project-specific patterns, conventions, or deviations from global config]
+
+## Notes
+
+- This project was created with `newproject PROJECT_NAME [--type node|ruby|python]`
+- Uses global configuration from `~/.config/`
+- Pre-commit hooks enforce code quality and run tests

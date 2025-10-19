@@ -1,0 +1,53 @@
+# Pre-commit hooks configuration template
+# Copy this to your project root and customize as needed
+#
+# Usage:
+#   1. Copy to project: cp ~/.config/templates/.pre-commit-config.yaml .
+#   2. Install hooks: pre-commit install
+#   3. Run manually: pre-commit run --all-files
+#
+# For TDD workflow, these hooks ensure code quality before committing
+
+repos:
+  # General file checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: detect-private-key
+
+  # JavaScript/TypeScript projects
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v4.0.0-alpha.8
+    hooks:
+      - id: prettier
+        types_or: [javascript, jsx, ts, tsx, json, yaml, markdown]
+
+  # Uncomment for Ruby projects
+  # - repo: https://github.com/rubocop/rubocop
+  #   rev: v1.69.2
+  #   hooks:
+  #     - id: rubocop
+
+  # Uncomment to run tests before commit (TDD)
+  # - repo: local
+  #   hooks:
+  #     - id: run-tests
+  #       name: Run tests
+  #       entry: pnpm test
+  #       language: system
+  #       pass_filenames: false
+  #       always_run: true
+
+  # Uncomment for Node.js projects with ESLint
+  # - repo: https://github.com/pre-commit/mirrors-eslint
+  #   rev: v9.17.0
+  #   hooks:
+  #     - id: eslint
+  #       files: \.[jt]sx?$
+  #       types: [file]

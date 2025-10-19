@@ -75,10 +75,11 @@
             # System utilities
             pkgs.mkalias # Create macOS aliases
             pkgs._1password-cli # 1Password CLI
+            pkgs.pre-commit # Git pre-commit hook framework
 
             # Development languages and runtimes
             pkgs.nodejs # Node.js runtime
-            pkgs.yarn # Node.js package manager
+            pkgs.nodePackages.pnpm # Fast, disk-efficient package manager
             pkgs.lua # Lua scripting language
             pkgs.nil # Nix language server
             pkgs.uv # python package manager
