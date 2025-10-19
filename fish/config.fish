@@ -16,9 +16,9 @@ if status is-interactive
         source /run/current-system/sw/share/asdf-vm/asdf.fish
     end
 
-    # Add asdf shims to PATH (needed for Fish shell)
+    # Add asdf shims to PATH (needed for Fish shell) - PRIORITY
     if test -d $HOME/.asdf/shims
-        fish_add_path -p $HOME/.asdf/shims
+        fish_add_path -g -p $HOME/.asdf/shims
     end
 
     # Add PostgreSQL to PATH

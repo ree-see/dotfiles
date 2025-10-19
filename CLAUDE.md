@@ -122,6 +122,28 @@ newproject api-server --type ruby --tdd    # Ruby with TDD
   - `createdb <name>` - Create new database
   - `dropdb <name>` - Delete database
 
+### Terminal Configuration
+
+**Available Terminals**:
+- **WezTerm** - Feature-rich terminal with advanced customization
+- **Warp** - Modern terminal with AI features, collaborative editing, and smart suggestions
+
+**Shell Setup**:
+- **Default shell**: Fish (configured in both terminals)
+- **Path priority**: asdf shims → PostgreSQL → Homebrew → Nix → system
+- **Auto-completion**: Fish provides syntax highlighting and autosuggestions
+- **Runtime management**: asdf automatically switches Ruby/Node versions per project
+
+**Testing in Warp**:
+```fish
+# Open Warp and run these commands to verify setup:
+ruby --version        # Should show Ruby 3.3.6
+asdf current          # Should show current runtime versions
+pnpm --version        # Should show pnpm 10.18.3
+psql --version        # Should show PostgreSQL 16.10
+hx --version          # Should show Helix editor
+```
+
 ### 1Password CLI Integration
 
 - CLI tool: `op` (installed via Nix)
@@ -153,7 +175,7 @@ This is a **macOS nix-darwin configuration repository** that manages system pack
 The system uses **nix-darwin** with flakes for declarative package management. All packages and applications are defined in `/Users/reesee/.config/nix/flake.nix`:
 
 - **Nix packages**: Helix, Fish, Node.js, pnpm, asdf, pre-commit, development tools
-- **Homebrew integration**: PostgreSQL@16, build dependencies (libyaml, openssl), GUI apps
+- **Homebrew integration**: PostgreSQL@16, build dependencies (libyaml, openssl), terminals (WezTerm, Warp), GUI apps
 - **Mac App Store apps**: Magnet
 
 ### Shell Environment
@@ -163,7 +185,9 @@ The repository uses **Fish shell** as the primary shell with configuration manag
 ### Development Tools Integration
 
 - **Editor**: Helix (`hx`) as primary editor
-- **Terminal**: WezTerm with advanced features (background images, GPU optimization)
+- **Terminals**:
+  - WezTerm - Advanced terminal with background images, GPU optimization
+  - Warp - Modern terminal with AI features, fast and intuitive
 - **File Manager**: Yazi for terminal-based file operations
 - **Version Control**: Lazygit for enhanced Git workflows
 - **Runtime Management**: asdf for Ruby, Node.js, Python versions

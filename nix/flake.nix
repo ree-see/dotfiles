@@ -115,6 +115,7 @@
             casks = [
               "raycast" # Productivity launcher
               "wezterm" # Advanced terminal emulator
+              "warp" # Modern terminal with AI features
             ];
 
             # Mac App Store applications
