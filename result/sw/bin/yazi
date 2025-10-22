@@ -1,0 +1,74 @@
+#! /nix/store/3g3sgwpnig8sd0w9wbs7d5gy512r43cq-bash-5.3p3/bin/bash -e
+PATH=${PATH:+':'$PATH':'}
+PATH=${PATH/':''/nix/store/kcvfbpsxdwys7nfhgmxz7i2iw4h9fmsk-resvg-0.45.1/bin'':'/':'}
+PATH='/nix/store/kcvfbpsxdwys7nfhgmxz7i2iw4h9fmsk-resvg-0.45.1/bin'$PATH
+PATH=${PATH#':'}
+PATH=${PATH%':'}
+export PATH
+PATH=${PATH:+':'$PATH':'}
+PATH=${PATH/':''/nix/store/3cj6ccznx56v8p9kajbnlrzv5h181igd-chafa-1.16.2-bin/bin'':'/':'}
+PATH='/nix/store/3cj6ccznx56v8p9kajbnlrzv5h181igd-chafa-1.16.2-bin/bin'$PATH
+PATH=${PATH#':'}
+PATH=${PATH%':'}
+export PATH
+PATH=${PATH:+':'$PATH':'}
+PATH=${PATH/':''/nix/store/s3lk0bfy83jjxaw7n921h76qm2kib22x-imagemagick-7.1.2-2/bin'':'/':'}
+PATH='/nix/store/s3lk0bfy83jjxaw7n921h76qm2kib22x-imagemagick-7.1.2-2/bin'$PATH
+PATH=${PATH#':'}
+PATH=${PATH%':'}
+export PATH
+PATH=${PATH:+':'$PATH':'}
+PATH=${PATH/':''/nix/store/i8qs9fy02zpgm5sn69cbs25gjmsr2371-zoxide-0.9.8/bin'':'/':'}
+PATH='/nix/store/i8qs9fy02zpgm5sn69cbs25gjmsr2371-zoxide-0.9.8/bin'$PATH
+PATH=${PATH#':'}
+PATH=${PATH%':'}
+export PATH
+PATH=${PATH:+':'$PATH':'}
+PATH=${PATH/':''/nix/store/4v7bkqi55ihcgh36wh7sza9rhlvdnch7-fzf-0.65.2/bin'':'/':'}
+PATH='/nix/store/4v7bkqi55ihcgh36wh7sza9rhlvdnch7-fzf-0.65.2/bin'$PATH
+PATH=${PATH#':'}
+PATH=${PATH%':'}
+export PATH
+PATH=${PATH:+':'$PATH':'}
+PATH=${PATH/':''/nix/store/f1mq88j7hmpq7m4rrrw0mwf8pchzscj5-ripgrep-14.1.1/bin'':'/':'}
+PATH='/nix/store/f1mq88j7hmpq7m4rrrw0mwf8pchzscj5-ripgrep-14.1.1/bin'$PATH
+PATH=${PATH#':'}
+PATH=${PATH%':'}
+export PATH
+PATH=${PATH:+':'$PATH':'}
+PATH=${PATH/':''/nix/store/j7g30gddzxsxggs7mqgnk8p31qpagl2l-fd-10.3.0/bin'':'/':'}
+PATH='/nix/store/j7g30gddzxsxggs7mqgnk8p31qpagl2l-fd-10.3.0/bin'$PATH
+PATH=${PATH#':'}
+PATH=${PATH%':'}
+export PATH
+PATH=${PATH:+':'$PATH':'}
+PATH=${PATH/':''/nix/store/kpvmjdsrhhmsf4f413ni25cwvnvv813b-ffmpeg-7.1.1-bin/bin'':'/':'}
+PATH='/nix/store/kpvmjdsrhhmsf4f413ni25cwvnvv813b-ffmpeg-7.1.1-bin/bin'$PATH
+PATH=${PATH#':'}
+PATH=${PATH%':'}
+export PATH
+PATH=${PATH:+':'$PATH':'}
+PATH=${PATH/':''/nix/store/0vg976prrh853zf1sbxccklhzanx7f5x-7zz-25.01/bin'':'/':'}
+PATH='/nix/store/0vg976prrh853zf1sbxccklhzanx7f5x-7zz-25.01/bin'$PATH
+PATH=${PATH#':'}
+PATH=${PATH%':'}
+export PATH
+PATH=${PATH:+':'$PATH':'}
+PATH=${PATH/':''/nix/store/naqd8yv8nzi7dbh305hw6rz2bi2ivqq1-poppler-utils-25.07.0/bin'':'/':'}
+PATH='/nix/store/naqd8yv8nzi7dbh305hw6rz2bi2ivqq1-poppler-utils-25.07.0/bin'$PATH
+PATH=${PATH#':'}
+PATH=${PATH%':'}
+export PATH
+PATH=${PATH:+':'$PATH':'}
+PATH=${PATH/':''/nix/store/w58c3ip3177vib3zwnmnjk5q62hvfjqz-jq-1.8.1-bin/bin'':'/':'}
+PATH='/nix/store/w58c3ip3177vib3zwnmnjk5q62hvfjqz-jq-1.8.1-bin/bin'$PATH
+PATH=${PATH#':'}
+PATH=${PATH%':'}
+export PATH
+PATH=${PATH:+':'$PATH':'}
+PATH=${PATH/':''/nix/store/43zqrnqn3y4j6zw8m85b8zld9acg8i3v-file-5.45/bin'':'/':'}
+PATH='/nix/store/43zqrnqn3y4j6zw8m85b8zld9acg8i3v-file-5.45/bin'$PATH
+PATH=${PATH#':'}
+PATH=${PATH%':'}
+export PATH
+exec "/nix/store/v59gm4xw56prfc1vczqaazi3fs2kag4a-yazi-25.5.31/bin/yazi"  "$@" 

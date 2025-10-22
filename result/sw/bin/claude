@@ -1,0 +1,4 @@
+#! /nix/store/3g3sgwpnig8sd0w9wbs7d5gy512r43cq-bash-5.3p3/bin/bash -e
+export DISABLE_AUTOUPDATER='1'
+unset DEV
+exec -a "$0" "/nix/store/3ynz3dasvb5dzbs7b0hcky5bs2jjgp00-claude-code-1.0.98/bin/.claude-wrapped"  "$@" 

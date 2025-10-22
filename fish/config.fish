@@ -32,3 +32,10 @@ end
 # Environment variables
 set -gx EDITOR /run/current-system/sw/bin/hx # Set Helix as default editor
 source /Users/reesee/.config/op/plugins.sh
+
+# pnpm
+set -gx PNPM_HOME "/Users/reesee/Library/pnpm"
+if not string match -q -- $PNPM_HOME $PATH
+  set -gx PATH "$PNPM_HOME" $PATH
+end
+# pnpm end

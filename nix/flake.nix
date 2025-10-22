@@ -81,6 +81,8 @@
             # Development languages and runtimes
             pkgs.nodejs # Node.js runtime
             pkgs.nodePackages.pnpm # Fast, disk-efficient package manager
+            pkgs.go # Go programming language
+            pkgs.golangci-lint # Go linter
             pkgs.lua # Lua scripting language
             pkgs.nil # Nix language server
             pkgs.uv # python package manager

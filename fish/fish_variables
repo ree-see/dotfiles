@@ -45,5 +45,5 @@ SETUVAR fish_pager_color_selected_background:\x2d\x2dbackground\x3dE6B450
 SETUVAR fish_pager_color_selected_completion:\x1d
 SETUVAR fish_pager_color_selected_description:\x1d
 SETUVAR fish_pager_color_selected_prefix:\x1d
-SETUVAR fish_user_paths:/opt/homebrew/opt/ruby/bin\x1e/Users/reesee/\x2elocal/bin\x1e/opt/homebrew/bin
+SETUVAR fish_user_paths:/opt/homebrew/opt/postgresql\x4016/bin\x1e/opt/homebrew/opt/ruby/bin\x1e/Users/reesee/\x2elocal/bin\x1e/opt/homebrew/bin
 SETUVAR pisces_pairs:\x28\x2c\x29\x1e\x5b\x2c\x5d\x1e\x7b\x2c\x7d\x1e\x22\x2c\x22\x1e\x27\x2c\x27
