@@ -158,6 +158,10 @@ end)
 -- ============================================================================
 
 config.keys = {
+	-- Copy and paste
+	{ key = "c", mods = "CMD", action = wezterm.action.CopyTo("ClipboardAndPrimarySelection") },
+	{ key = "v", mods = "CMD", action = wezterm.action.PasteFrom("Clipboard") },
+
 	-- Tab management
 	{ key = "t", mods = "CMD", action = wezterm.action.SpawnTab("CurrentPaneDomain") },
 	{ key = "w", mods = "CMD", action = wezterm.action.CloseCurrentTab({ confirm = true }) },
