@@ -159,8 +159,8 @@ end)
 
 config.keys = {
 	-- Copy and paste
-	{ key = "c", mods = "CMD", action = wezterm.action.Copy },
-	{ key = "v", mods = "CMD", action = wezterm.action.Paste },
+	{ key = "c", mods = "CMD", action = wezterm.action.CopyTo("Clipboard") },
+	{ key = "v", mods = "CMD", action = wezterm.action.PasteFrom("Clipboard") },
 
 	-- Tab management
 	{ key = "t", mods = "CMD", action = wezterm.action.SpawnTab("CurrentPaneDomain") },
