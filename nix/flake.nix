@@ -111,6 +111,7 @@
               "postgresql@16" # PostgreSQL database
               "libyaml" # YAML parser library for Ruby
               "openssl@3" # OpenSSL for Ruby compilation
+              "ifstat" # Network interface statistics
             ];
 
             # GUI applications via Homebrew Cask
