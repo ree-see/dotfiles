@@ -11,6 +11,10 @@
 if status is-interactive
     # Commands to run in interactive sessions can go here
 
+    # Disable terminal focus reporting to prevent escape sequences in input
+    # Fixes [I[O characters appearing in Claude Code and other applications
+    printf '\e[?1004l'
+
     # Initialize asdf for multiple runtime version management
     if test -f /run/current-system/sw/share/asdf-vm/asdf.fish
         source /run/current-system/sw/share/asdf-vm/asdf.fish
