@@ -21,6 +21,8 @@ This will:
 - Fish shell configuration
 - asdf runtime installation (Ruby 3.3.6)
 - PostgreSQL service startup
+- SSH authentication with 1Password
+- GitHub repository cloning
 - System validation
 
 **Time**: 20-35 minutes (mostly unattended)
@@ -125,6 +127,63 @@ createdb $(whoami)
 ```bash
 # Sign in to 1Password
 op signin
+```
+
+## Step 7a: Configure SSH Authentication with 1Password
+
+1Password can act as your SSH agent, securely storing and managing SSH keys.
+
+### Enable SSH Agent in 1Password
+1. Open 1Password app
+2. Go to Settings → Developer
+3. Enable "Use the SSH agent"
+4. Optionally enable "Display key names when authorizing connections"
+
+### Configure SSH to Use 1Password
+The bootstrap script automates this, but if needed manually:
+
+```bash
+# Create/edit SSH config
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+
+# Add 1Password agent configuration
+cat >> ~/.ssh/config << 'EOF'
+
+# 1Password SSH Agent
+Host *
+    IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+EOF
+
+chmod 600 ~/.ssh/config
+```
+
+### Add SSH Keys to 1Password
+1. **Generate a new SSH key** (recommended):
+   - In 1Password: Settings → Developer → Create New SSH Key
+   - Name it (e.g., "GitHub - MacBook")
+   - Copy the public key
+
+2. **Or import existing key**:
+   - In 1Password: Create new Secure Note
+   - Choose "SSH Key" category
+   - Paste private key content
+
+3. **Add public key to GitHub**:
+   ```bash
+   # List available SSH keys in 1Password
+   SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock ssh-add -L
+
+   # Copy public key and add to: https://github.com/settings/keys
+   ```
+
+### Test SSH Authentication
+```bash
+# Test GitHub connection
+ssh -T git@github.com
+
+# Expected output:
+# Hi username! You've successfully authenticated...
 ```
 
 ## Step 8: Manual Configuration Steps

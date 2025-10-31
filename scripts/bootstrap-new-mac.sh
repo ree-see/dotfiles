@@ -5,7 +5,7 @@
 set -e
 
 STEP=0
-TOTAL_STEPS=10
+TOTAL_STEPS=11
 
 step() {
     STEP=$((STEP + 1))
@@ -261,6 +261,83 @@ else
     warn "Homebrew not found - service configuration skipped"
 fi
 
+# Step 8a: Configure SSH authentication with 1Password
+step "Configuring SSH authentication"
+
+# Check if 1Password app is installed
+if [[ -d "/Applications/1Password.app" ]]; then
+    info "1Password app detected"
+
+    # Check if 1Password SSH agent socket exists
+    ssh_socket="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+
+    if [[ -S "$ssh_socket" ]]; then
+        success "1Password SSH agent is available"
+
+        # Configure SSH to use 1Password agent
+        ssh_config="$HOME/.ssh/config"
+
+        if [[ ! -f "$ssh_config" ]] || ! grep -q "IdentityAgent.*1password" "$ssh_config"; then
+            if confirm "Configure SSH to use 1Password for authentication?"; then
+                info "Creating/updating SSH config..."
+
+                # Create .ssh directory if it doesn't exist
+                mkdir -p "$HOME/.ssh"
+                chmod 700 "$HOME/.ssh"
+
+                # Backup existing config if present
+                if [[ -f "$ssh_config" ]]; then
+                    cp "$ssh_config" "$ssh_config.backup.$(date +%Y%m%d-%H%M%S)"
+                    info "Backed up existing SSH config"
+                fi
+
+                # Add 1Password agent configuration
+                cat >> "$ssh_config" << 'EOF'
+
+# 1Password SSH Agent
+Host *
+    IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+EOF
+
+                chmod 600 "$ssh_config"
+                success "SSH configured to use 1Password agent"
+            fi
+        else
+            success "SSH already configured for 1Password"
+        fi
+
+        # Test SSH authentication
+        if confirm "Test SSH connection to GitHub?"; then
+            info "Testing SSH authentication..."
+            export SSH_AUTH_SOCK="$ssh_socket"
+
+            if ssh -T git@github.com 2>&1 | grep -q "successfully authenticated"; then
+                success "GitHub SSH authentication successful"
+            else
+                warn "GitHub SSH authentication test inconclusive"
+                info "This is normal if you haven't added SSH keys to 1Password yet"
+                echo ""
+                info "To add SSH keys to 1Password:"
+                echo "  1. Open 1Password app"
+                echo "  2. Go to Settings → Developer"
+                echo "  3. Enable 'Use the SSH agent'"
+                echo "  4. Import or generate SSH keys"
+                echo "  5. Add public key to GitHub: https://github.com/settings/keys"
+            fi
+        fi
+    else
+        warn "1Password SSH agent not running"
+        info "To enable SSH agent in 1Password:"
+        echo "  1. Open 1Password app"
+        echo "  2. Go to Settings → Developer"
+        echo "  3. Enable 'Use the SSH agent'"
+    fi
+else
+    warn "1Password not installed yet"
+    info "SSH authentication will be configured after 1Password is installed"
+    info "You can run this step manually later or authenticate with 'gh auth login'"
+fi
+
 # Step 9: Clone development repositories
 step "Setting up development projects"
 
@@ -413,6 +490,7 @@ echo "  - SuperClaude framework configured"
 echo "  - Fish shell configured"
 echo "  - Runtime versions installed"
 echo "  - Services configured"
+echo "  - SSH authentication configured (1Password)"
 echo "  - Development directory set up"
 echo ""
 echo "📋 Manual Steps Remaining:"
