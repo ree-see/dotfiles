@@ -74,7 +74,7 @@ end
 # Test 3: Homebrew casks
 echo ""
 echo "📱 Testing Homebrew Casks..."
-set casks raycast spotify warp wezterm
+set casks 1password claude google-chrome raycast spotify warp wezterm
 for cask in $casks
     if brew list --cask | grep -q "^$cask\$"
         test_pass "Homebrew cask: $cask"

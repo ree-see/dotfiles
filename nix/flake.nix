@@ -116,6 +116,9 @@
 
             # GUI applications via Homebrew Cask
             casks = [
+              "1password" # Password manager desktop app
+              "claude" # AI assistant desktop app
+              "google-chrome" # Web browser
               "raycast" # Productivity launcher
               "spotify" # Music streaming
               "warp" # Modern terminal with AI features

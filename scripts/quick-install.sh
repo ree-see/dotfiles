@@ -30,28 +30,14 @@ else
 fi
 
 # Run the full bootstrap script
-if [ -x "$HOME/.config/scripts/bootstrap-new-mac.fish" ]; then
+if [ -x "$HOME/.config/scripts/bootstrap-new-mac.sh" ]; then
     echo "🎯 Launching automated setup script..."
     echo ""
-
-    # Run with fish if available, otherwise use system shell to run fish script
-    if command -v fish &> /dev/null; then
-        fish "$HOME/.config/scripts/bootstrap-new-mac.fish"
-    else
-        # Nix should have installed fish, try the nix path
-        if [ -x "/run/current-system/sw/bin/fish" ]; then
-            /run/current-system/sw/bin/fish "$HOME/.config/scripts/bootstrap-new-mac.fish"
-        else
-            echo "❌ Fish shell not found. Please run:"
-            echo "  cd ~/.config && nix run nix-darwin -- switch --flake .#macbook"
-            echo "  Then re-run this script"
-            exit 1
-        fi
-    fi
+    bash "$HOME/.config/scripts/bootstrap-new-mac.sh"
 else
     echo "❌ Bootstrap script not found"
     echo "Please run manually:"
     echo "  cd ~/.config"
-    echo "  ./scripts/bootstrap-new-mac.fish"
+    echo "  ./scripts/bootstrap-new-mac.sh"
     exit 1
 fi
