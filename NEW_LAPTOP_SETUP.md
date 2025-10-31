@@ -125,7 +125,38 @@ WezTerm config is automatically loaded from `~/.config/wezterm/wezterm.lua`
 2. Settings → Features → Set Fish as default shell
 3. Fish config is automatically loaded from `~/.config/fish/config.fish`
 
-## Step 9: Verification
+## Step 9: Run Automated Validation
+
+**Run the comprehensive validation script**:
+```bash
+~/.config/scripts/validate-system.fish
+```
+
+This script tests:
+- All 18 Nix packages (helix, fish, node, pnpm, go, etc.)
+- All 3 Homebrew formulae (postgresql@16, mas, ifstat)
+- All 4 Homebrew casks (raycast, spotify, warp, wezterm)
+- All 6 Mac App Store apps (including Xcode, 1Password, etc.)
+- asdf Ruby installation and version
+- Custom Fish commands (rebuild, config, newproject, etc.)
+- Configuration files (flake.nix, fish config, helix, wezterm, claude)
+- SuperClaude framework symlink
+- System defaults (Dock, Finder settings)
+- PostgreSQL service status
+- Font installation
+- Git configuration
+- Shell and PATH setup
+
+**Expected output**:
+```
+✅ Passed:  54
+⚠️  Warnings: 1 (default shell - expected on first run)
+❌ Failed:  0
+```
+
+If any tests fail, the script will show exactly what's missing.
+
+## Step 10: Manual Verification
 
 ### Test System Commands
 ```bash
