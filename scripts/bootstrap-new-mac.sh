@@ -268,11 +268,32 @@ step "Configuring SSH authentication"
 if [[ -d "/Applications/1Password.app" ]]; then
     info "1Password app detected"
 
-    # Check if 1Password SSH agent socket exists
-    ssh_socket="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+    # Prompt user to sign in to 1Password first
+    echo ""
+    info "⚠️  IMPORTANT: You need to sign in to 1Password before continuing"
+    echo ""
+    echo "Please complete these steps:"
+    echo "  1. Open 1Password app (in /Applications)"
+    echo "  2. Sign in to your 1Password account"
+    echo "  3. Go to Settings → Developer"
+    echo "  4. Enable 'Use the SSH agent'"
+    echo "  5. (Optional) Enable 'Display key names when authorizing connections'"
+    echo ""
 
-    if [[ -S "$ssh_socket" ]]; then
-        success "1Password SSH agent is available"
+    # Wait for user confirmation
+    if ! confirm "Have you signed in to 1Password and enabled the SSH agent?"; then
+        warn "Skipping SSH configuration"
+        info "You can configure SSH later by running this step manually"
+        info "Or authenticate with: gh auth login"
+    else
+        # Check if 1Password SSH agent socket exists
+        ssh_socket="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+
+        # Give it a moment to initialize
+        sleep 2
+
+        if [[ -S "$ssh_socket" ]]; then
+            success "1Password SSH agent is available"
 
         # Configure SSH to use 1Password agent
         ssh_config="$HOME/.ssh/config"
@@ -325,12 +346,15 @@ EOF
                 echo "  5. Add public key to GitHub: https://github.com/settings/keys"
             fi
         fi
-    else
-        warn "1Password SSH agent not running"
-        info "To enable SSH agent in 1Password:"
-        echo "  1. Open 1Password app"
-        echo "  2. Go to Settings → Developer"
-        echo "  3. Enable 'Use the SSH agent'"
+        else
+            warn "1Password SSH agent not detected"
+            info "Make sure you:"
+            echo "  1. Opened 1Password app"
+            echo "  2. Signed in to your account"
+            echo "  3. Enabled SSH agent in Settings → Developer"
+            echo ""
+            info "SSH configuration skipped - you can authenticate later with: gh auth login"
+        fi
     fi
 else
     warn "1Password not installed yet"

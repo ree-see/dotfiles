@@ -27,6 +27,11 @@ This will:
 
 **Time**: 20-35 minutes (mostly unattended)
 
+**⚠️ IMPORTANT**: During setup, you'll be prompted to:
+- Sign in to 1Password (after it's installed)
+- Enable SSH agent in 1Password Settings → Developer
+- This is required before cloning GitHub repos
+
 **After completion**: Follow remaining manual steps shown by the script.
 
 ---
@@ -130,6 +135,8 @@ op signin
 ```
 
 ## Step 7a: Configure SSH Authentication with 1Password
+
+**Note**: The bootstrap script handles most of this automatically, but you MUST sign in to 1Password first when prompted.
 
 1Password can act as your SSH agent, securely storing and managing SSH keys.
 
