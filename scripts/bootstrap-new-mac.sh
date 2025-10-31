@@ -136,14 +136,35 @@ echo "  - Homebrew: PostgreSQL, mas, formulae and casks"
 echo "  - Mac App Store apps: Magnet, Xcode, 1Password, etc."
 echo ""
 
-if ! confirm "Start nix-darwin build?"; then
-    warn "Skipping nix-darwin build - system will be incomplete"
-else
-    cd ~/.config || error "Failed to change to ~/.config directory"
+# CRITICAL: Ensure Mac App Store sign-in before mas installations
+echo ""
+info "⚠️  IMPORTANT: Mac App Store sign-in required"
+echo ""
+echo "The build will install 6 Mac App Store apps using 'mas'"
+echo "You MUST be signed in to the Mac App Store for this to work."
+echo ""
+echo "Please verify:"
+echo "  1. Open App Store (should be in /Applications)"
+echo "  2. Sign in with your Apple ID if prompted"
+echo "  3. Verify you see your account name in the bottom left"
+echo ""
 
+if ! confirm "Are you signed in to the Mac App Store?"; then
+    warn "Mac App Store apps will fail to install without sign-in"
+    if ! confirm "Continue anyway? (not recommended)"; then
+        warn "Skipping nix-darwin build - system will be incomplete"
+        info "Sign in to Mac App Store, then run: cd ~/.config && darwin-rebuild switch --flake .#macbook"
+        # Skip to next step
+    elif confirm "Start nix-darwin build?"; then
+        cd ~/.config || error "Failed to change to ~/.config directory"
+        info "Running nix-darwin build (Mac App Store apps may fail)..."
+        nix run nix-darwin -- switch --flake .#macbook || error "nix-darwin build failed - check output above"
+        success "nix-darwin build completed successfully"
+    fi
+elif confirm "Start nix-darwin build?"; then
+    cd ~/.config || error "Failed to change to ~/.config directory"
     info "Running nix-darwin build..."
     nix run nix-darwin -- switch --flake .#macbook || error "nix-darwin build failed - check output above"
-
     success "nix-darwin build completed successfully"
 fi
 

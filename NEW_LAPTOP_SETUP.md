@@ -28,9 +28,9 @@ This will:
 **Time**: 20-35 minutes (mostly unattended)
 
 **⚠️ IMPORTANT**: During setup, you'll be prompted to:
-- Sign in to 1Password (after it's installed)
-- Enable SSH agent in 1Password Settings → Developer
-- This is required before cloning GitHub repos
+- **Sign in to Mac App Store** (before nix-darwin build) - Required for installing 6 Mac App Store apps
+- **Sign in to 1Password** (after it's installed) - Required for SSH authentication
+- **Enable SSH agent** in 1Password Settings → Developer - Required before cloning GitHub repos
 
 **After completion**: Follow remaining manual steps shown by the script.
 
