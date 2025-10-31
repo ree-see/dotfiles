@@ -1,1 +1,15 @@
 ./result
+
+# Claude Code runtime files (exclude from git)
+claude/debug/
+claude/file-history/
+claude/history.jsonl
+claude/logs/
+claude/session-env/
+claude/shell-snapshots/
+claude/statsig/
+claude/todos/
+claude/.superclaude-metadata.json
+claude/.update_check
+claude/backups/
+claude/projects/

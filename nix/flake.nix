@@ -117,13 +117,19 @@
             # GUI applications via Homebrew Cask
             casks = [
               "raycast" # Productivity launcher
-              "wezterm" # Advanced terminal emulator
+              "spotify" # Music streaming
               "warp" # Modern terminal with AI features
+              "wezterm" # Advanced terminal emulator
             ];
 
             # Mac App Store applications
             masApps = {
+              "1password-for-safari" = 1569813296; # Safari extension for 1Password
+              "apple-configurator" = 1037126344; # Apple device management
               "magnet" = 441258766; # Window management
+              "overpicture" = 1188020834; # Picture-in-picture for any window
+              "wipr" = 1662217862; # Safari content blocker
+              "xcode" = 497799835; # Apple development IDE
             };
 
             # Homebrew maintenance settings
@@ -159,8 +165,79 @@
           security.pam.services.sudo_local.touchIdAuth = true; # Enable Touch ID for sudo
 
           # macOS system preferences
+          # These settings are applied declaratively and will be set on every rebuild
           system.defaults = {
-            # NSGlobalDomain._HIHideMenuBar = true;  # Hide menu bar (disabled)
+            # Dock settings
+            dock = {
+              autohide = true; # Automatically hide and show the Dock
+              autohide-delay = 0.0; # Remove Dock show delay
+              autohide-time-modifier = 0.2; # Speed up Dock animation
+              orientation = "bottom"; # Dock position
+              show-recents = false; # Don't show recent applications
+              tilesize = 48; # Icon size
+              minimize-to-application = true; # Minimize windows into application icon
+              mru-spaces = false; # Don't automatically rearrange spaces
+            };
+
+            # Finder settings
+            finder = {
+              AppleShowAllExtensions = true; # Show all file extensions
+              AppleShowAllFiles = false; # Don't show hidden files by default
+              FXEnableExtensionChangeWarning = false; # Disable file extension change warning
+              FXPreferredViewStyle = "Nlsv"; # List view by default
+              ShowPathbar = true; # Show path bar
+              ShowStatusBar = true; # Show status bar
+              _FXShowPosixPathInTitle = true; # Show full path in title
+            };
+
+            # Trackpad settings
+            trackpad = {
+              Clicking = true; # Tap to click
+              TrackpadRightClick = true; # Two-finger right click
+              TrackpadThreeFingerDrag = false; # Disable three finger drag
+            };
+
+            # Keyboard settings
+            NSGlobalDomain = {
+              AppleKeyboardUIMode = 3; # Full keyboard access for all controls
+              ApplePressAndHoldEnabled = false; # Disable press-and-hold for accent characters
+              InitialKeyRepeat = 15; # Fast initial key repeat (normal = 15)
+              KeyRepeat = 2; # Fast key repeat (normal = 2)
+              NSAutomaticCapitalizationEnabled = false; # Disable automatic capitalization
+              NSAutomaticDashSubstitutionEnabled = false; # Disable smart dashes
+              NSAutomaticPeriodSubstitutionEnabled = false; # Disable period with double-space
+              NSAutomaticQuoteSubstitutionEnabled = false; # Disable smart quotes
+              NSAutomaticSpellingCorrectionEnabled = false; # Disable auto-correct
+              NSNavPanelExpandedStateForSaveMode = true; # Expand save panel by default
+              NSNavPanelExpandedStateForSaveMode2 = true; # Expand save panel by default
+              PMPrintingExpandedStateForPrint = true; # Expand print panel by default
+              PMPrintingExpandedStateForPrint2 = true; # Expand print panel by default
+            };
+
+            # Screen settings
+            screencapture = {
+              location = "~/Desktop"; # Save screenshots to Desktop
+              type = "png"; # Screenshot format
+            };
+
+            # Menu bar and system UI
+            menuExtraClock = {
+              Show24Hour = true; # 24-hour time format
+              ShowDate = 1; # Show date in menu bar (0 = never, 1 = always, 2 = when space allows)
+            };
+
+            # Activity Monitor
+            ActivityMonitor = {
+              IconType = 5; # Show CPU usage in Dock icon
+              OpenMainWindow = true; # Open main window on launch
+              ShowCategory = 100; # Show all processes
+            };
+
+            # Other settings
+            screensaver = {
+              askForPassword = true; # Require password after screensaver
+              askForPasswordDelay = 0; # Immediately require password
+            };
           };
 
           # Nix configuration
