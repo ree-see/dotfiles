@@ -1,132 +1,116 @@
-# macOS Development Environment with Nix Darwin
+# Dotfiles & System Configuration
 
-A comprehensive, declarative macOS development environment managed through nix-darwin flakes, featuring dual shell support (Fish + Nushell) and modern terminal tools.
+Declarative macOS configuration using nix-darwin for complete system reproducibility.
+
+## 🚀 Quick Setup (New Laptop)
+
+**One command to set up everything**:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/ree-see/dotfiles/main/scripts/quick-install.sh | bash
+```
+
+This automates:
+- ✅ Nix package manager installation
+- ✅ Dotfiles repository cloning
+- ✅ All system packages and applications
+- ✅ Fish shell configuration
+- ✅ Runtime environments (Ruby, Node.js)
+- ✅ Service configuration (PostgreSQL)
+- ✅ System validation
+
+**Time**: 20-35 minutes
+
+**See**: [NEW_LAPTOP_SETUP.md](NEW_LAPTOP_SETUP.md) for detailed documentation.
 
 ## 🚀 Features
 
 - **Declarative System Management**: Everything managed through nix-darwin flakes
-- **Dual Shell Environment**: Fish shell with enhanced Nushell integration
-- **Modern Development Tools**: Helix editor, WezTerm terminal, Zellij multiplexer
-- **Custom Configuration Management**: Unified `cfg` command for editing configs
+- **Fish Shell**: Primary shell with custom commands
+- **Modern Development Tools**: Helix editor (custom build), WezTerm/Warp terminals
+- **SuperClaude Framework**: Advanced Claude Code integration
 - **Safe System Rebuilds**: Built-in rollback and generation management
 - **Touch ID Integration**: Secure sudo authentication
 - **Homebrew Integration**: Seamless integration with Mac-native apps
+- **Automated Setup**: One-line installer for new machines
 
 ## 📦 What's Included
 
 ### System Packages (via Nix)
-- **Editors**: Helix, Nil (Nix LSP)
-- **Shells**: Fish, Nushell
-- **Terminal Tools**: Zellij, Yazi, Zoxide, Lazygit
-- **Development**: Node.js, TypeScript LSP, Prettier, Ruby, Solargraph
-- **CLI Tools**: 1Password CLI, Watchman, Yarn
+- **Editor**: Helix (custom build from github:ree-see/helix)
+- **Shell**: Fish with custom commands
+- **Tools**: yazi, zoxide, gh, 1password-cli, pre-commit, asdf
+- **Languages**: Node.js, pnpm, Go, golangci-lint, Lua, nil, uv
+- **Development**: watchman, TypeScript tools, prettier
 
 ### Applications (via Homebrew)
-- **Terminal**: Ghostty, WezTerm
-- **Productivity**: Raycast
-- **Databases**: PostgreSQL
-- **Development**: rbenv
+- **Formulae**: PostgreSQL@16, mas, libyaml, openssl@3, ifstat
+- **Casks**: Raycast, Spotify, Warp, WezTerm
 
 ### Mac App Store Apps
-- **Window Management**: Magnet
-- **Development**: Xcode
+- 1Password for Safari, Apple Configurator, Magnet, OverPicture, Wipr, Xcode
 
-## 🛠 Installation
+### System Settings
+- Dock: Auto-hide, 48px icons, no recents
+- Finder: Show extensions, path bar, full paths
+- Trackpad: Tap to click
+- Keyboard: Fast repeat, no auto-correct
+- Screenshots: PNG to Desktop
+- Screensaver: Immediate password
 
-### Prerequisites
-- macOS (Apple Silicon recommended)
-- Nix package manager
-- Git
+## 📁 Repository Structure
 
-### Quick Setup
-
-1. **Install Nix with flakes support**:
-   ```bash
-   curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
-   ```
-
-2. **Clone this configuration**:
-   ```bash
-   git clone <your-repo-url> ~/.config
-   cd ~/.config
-   ```
-
-3. **Initial system build**:
-   ```bash
-   # Build the configuration
-   sudo darwin-rebuild build --flake .#macbook
-   
-   # If successful, activate it
-   sudo darwin-rebuild switch --flake .#macbook
-   ```
-
-4. **Set up shells**:
-   ```bash
-   # Add Fish to available shells
-   echo /run/current-system/sw/bin/fish | sudo tee -a /etc/shells
-   
-   # Change default shell to Fish
-   chsh -s /run/current-system/sw/bin/fish
-   ```
-
-## 🎯 Usage
-
-### Configuration Management
-
-Edit any tool's configuration using the unified `cfg` command:
-
-```bash
-# Edit specific tool configs
-cfg helix          # Helix editor settings
-cfg nix            # Nix flake configuration  
-cfg fish           # Fish shell config
-cfg nushell        # Nushell configuration
-cfg wezterm        # WezTerm terminal settings
-cfg zellij         # Zellij multiplexer config
+```
+~/.config/
+├── nix/
+│   └── flake.nix              # System packages, apps, and macOS settings
+├── fish/
+│   ├── config.fish            # Fish shell configuration
+│   └── functions/             # Custom Fish commands
+├── helix/                     # Helix editor configuration
+├── wezterm/
+│   └── wezterm.lua           # WezTerm terminal configuration
+├── claude/                    # SuperClaude framework (symlinked to ~/.claude)
+│   ├── RULES.md              # Core behavioral rules
+│   ├── FLAGS.md              # Mode activation flags
+│   ├── MODE_*.md             # Behavioral modes
+│   ├── agents/               # Specialist agent personas
+│   └── commands/sc/          # Slash commands
+├── scripts/
+│   ├── bootstrap-new-mac.fish  # Automated setup script
+│   ├── quick-install.sh        # One-line installer
+│   └── validate-system.fish    # System validation
+└── templates/                 # Project templates
 ```
 
-### System Management
+## 🔧 Management Commands
 
-Manage your nix-darwin system with enhanced commands:
-
-```bash
-# Quick system rebuild
-rebuild
-
-# Commit changes and rebuild
-rebuild --commit
-
-# Build without activating (test first)
-rebuild build
-
-# Show what will change
-rebuild --diff
-
-# Revert to previous generation
-rollback
-
-# Check system status
-nixstatus
+### System Updates
+```fish
+rebuild              # Build and activate nix-darwin changes
+rebuild --diff       # Preview changes before applying
+rebuild --commit     # Commit changes before rebuilding
+rollback             # Revert to previous generation
+nixstatus            # Show current system generation
 ```
 
-### Shell Experience
+### Configuration
+```fish
+config helix         # Edit Helix config
+config nix           # Edit nix configuration
+config fish          # Edit Fish config
+config wezterm       # Edit WezTerm config
+```
 
-**Fish Shell** (Primary):
-- Fast, user-friendly with autocompletions
-- Minimal configuration in `fish/config.fish`
+### Project Management
+```fish
+newproject my-app --type node --tdd    # Scaffold new project
+mkcd path/to/dir                       # Create and cd to directory
+```
 
-**Nushell** (Enhanced):
-- Structured data and powerful pipelines
-- Enhanced versions of all Fish functions
-- Type-safe commands with built-in help
-
-```bash
-# Try Nushell anytime
-nu
-
-# Test enhanced commands
-mkcd project1 project2     # Create multiple dirs, cd to last
-rebuild --help             # Comprehensive help for all commands
+### Validation
+```fish
+~/.config/scripts/validate-system.fish  # Validate system configuration
 ```
 
 ## 📁 Configuration Structure

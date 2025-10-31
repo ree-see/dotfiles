@@ -1,6 +1,37 @@
 # New MacBook Setup Guide
 
-Complete checklist for reproducing this exact system configuration on a new Mac.
+Complete guide for reproducing this exact system configuration on a new Mac.
+
+## 🚀 Quick Start (Automated Setup)
+
+**One-line installer** (recommended for new laptops):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/ree-see/dotfiles/main/scripts/quick-install.sh | bash
+```
+
+This will:
+1. Install Nix package manager
+2. Clone dotfiles repository to `~/.config`
+3. Run the interactive bootstrap script
+4. Guide you through all automated setup steps
+
+**Interactive prompts** for:
+- nix-darwin build (installs all packages/apps)
+- Fish shell configuration
+- asdf runtime installation (Ruby 3.3.6)
+- PostgreSQL service startup
+- System validation
+
+**Time**: 20-35 minutes (mostly unattended)
+
+**After completion**: Follow remaining manual steps shown by the script.
+
+---
+
+## 📖 Manual Setup (Step-by-Step)
+
+If you prefer manual control or the automated script fails, follow these steps:
 
 ## Prerequisites
 - macOS installed (Apple Silicon / aarch64)
