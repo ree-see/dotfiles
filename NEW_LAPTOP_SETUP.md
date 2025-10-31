@@ -166,8 +166,8 @@ WezTerm config is automatically loaded from `~/.config/wezterm/wezterm.lua`
 This script tests:
 - All 18 Nix packages (helix, fish, node, pnpm, go, etc.)
 - All 3 Homebrew formulae (postgresql@16, mas, ifstat)
-- All 4 Homebrew casks (raycast, spotify, warp, wezterm)
-- All 6 Mac App Store apps (including Xcode, 1Password, etc.)
+- All 7 Homebrew casks (1password, claude, google-chrome, raycast, spotify, warp, wezterm)
+- All 6 Mac App Store apps (including Xcode, 1Password for Safari, etc.)
 - asdf Ruby installation and version
 - Custom Fish commands (rebuild, config, newproject, etc.)
 - Configuration files (flake.nix, fish config, helix, wezterm, claude)
@@ -180,14 +180,87 @@ This script tests:
 
 **Expected output**:
 ```
-✅ Passed:  54
+✅ Passed:  57
 ⚠️  Warnings: 1 (default shell - expected on first run)
 ❌ Failed:  0
 ```
 
 If any tests fail, the script will show exactly what's missing.
 
-## Step 10: Manual Verification
+## Step 10: Verify with SuperClaude Commands
+
+After setup, use these SuperClaude commands to verify and explore your new system:
+
+### System Analysis
+```bash
+# Analyze entire nix-darwin configuration
+/sc:analyze ~/.config/nix/flake.nix --focus architecture
+
+# Review system defaults and settings
+/sc:analyze ~/.config/nix/flake.nix --focus quality
+
+# Check for any security issues in config
+/sc:analyze ~/.config --focus security
+```
+
+### Documentation Generation
+```bash
+# Generate comprehensive system documentation
+/sc:index ~/.config --output ~/claudedocs/system-overview.md
+
+# Document custom Fish functions
+/sc:document ~/.config/fish/functions/
+
+# Create README for your dotfiles
+/sc:document ~/.config --type readme
+```
+
+### Troubleshooting
+```bash
+# Diagnose any setup issues
+/sc:troubleshoot "System validation failed for [specific test]"
+
+# Explain any configuration you're unsure about
+/sc:explain ~/.config/nix/flake.nix:120-130
+
+# Get help with nix-darwin concepts
+/sc:explain "nix-darwin flakes and modules"
+```
+
+### Improvement Suggestions
+```bash
+# Get recommendations for your config
+/sc:improve ~/.config/nix/flake.nix --focus performance
+
+# Optimize Fish shell configuration
+/sc:improve ~/.config/fish/config.fish
+
+# Review and enhance validation script
+/sc:improve ~/.config/scripts/validate-system.fish
+```
+
+### Testing
+```bash
+# Test nix-darwin rebuild process
+/sc:test ~/.config/scripts/validate-system.fish
+
+# Validate all scripts are working
+/sc:test ~/.config/scripts/
+```
+
+### Quick Reference
+```bash
+# List all available SuperClaude commands
+/sc:help
+
+# Get help with specific command
+/sc:help analyze
+
+# Load saved session context (if you had previous sessions)
+/sc:load my-setup-session
+```
+
+## Step 11: Manual Verification
 
 ### Test System Commands
 ```bash
