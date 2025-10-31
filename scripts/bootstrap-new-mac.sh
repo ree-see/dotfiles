@@ -5,7 +5,7 @@
 set -e
 
 STEP=0
-TOTAL_STEPS=9
+TOTAL_STEPS=10
 
 step() {
     STEP=$((STEP + 1))
@@ -261,7 +261,124 @@ else
     warn "Homebrew not found - service configuration skipped"
 fi
 
-# Step 9: Run validation
+# Step 9: Clone development repositories
+step "Setting up development projects"
+
+# Create ~/dev directory
+if [[ ! -d ~/dev ]]; then
+    info "Creating ~/dev directory..."
+    mkdir -p ~/dev
+    success "~/dev directory created"
+else
+    info "~/dev directory already exists"
+fi
+
+# Clone GitHub repositories
+if command -v gh &>/dev/null; then
+    if confirm "Clone your GitHub repositories to ~/dev?"; then
+        info "Checking GitHub authentication..."
+
+        # Check if gh is authenticated
+        if gh auth status &>/dev/null; then
+            success "GitHub CLI authenticated"
+
+            info "Fetching your repositories..."
+            echo ""
+
+            # Get list of repos
+            repos=$(gh repo list --limit 100 --json name,sshUrl --jq '.[] | "\(.name)|\(.sshUrl)"')
+
+            if [[ -n "$repos" ]]; then
+                echo "Available repositories:"
+                echo ""
+
+                # Display repos with numbers
+                repo_count=0
+                while IFS='|' read -r name ssh_url; do
+                    repo_count=$((repo_count + 1))
+                    printf "  %2d. %s\n" "$repo_count" "$name"
+                    # Store for later use
+                    eval "repo_name_$repo_count=\"$name\""
+                    eval "repo_url_$repo_count=\"$ssh_url\""
+                done <<< "$repos"
+
+                echo ""
+                info "Clone options:"
+                echo "  a - Clone all repositories"
+                echo "  s - Select specific repositories (comma-separated numbers)"
+                echo "  n - Skip repository cloning"
+                echo ""
+                read -p "Your choice [a/s/n]: " clone_choice
+
+                case "$clone_choice" in
+                    a|A)
+                        info "Cloning all repositories..."
+                        for i in $(seq 1 "$repo_count"); do
+                            name_var="repo_name_$i"
+                            url_var="repo_url_$i"
+                            repo_name="${!name_var}"
+                            repo_url="${!url_var}"
+
+                            if [[ -d ~/dev/"$repo_name" ]]; then
+                                warn "Skipping $repo_name (already exists)"
+                            else
+                                info "Cloning $repo_name..."
+                                git clone "$repo_url" ~/dev/"$repo_name" || warn "Failed to clone $repo_name"
+                            fi
+                        done
+                        success "Repository cloning complete"
+                        ;;
+                    s|S)
+                        echo ""
+                        read -p "Enter repository numbers (comma-separated, e.g., 1,3,5): " repo_numbers
+
+                        # Parse comma-separated numbers
+                        IFS=',' read -ra NUMBERS <<< "$repo_numbers"
+                        for num in "${NUMBERS[@]}"; do
+                            # Trim whitespace
+                            num=$(echo "$num" | xargs)
+
+                            if [[ "$num" =~ ^[0-9]+$ ]] && [[ "$num" -ge 1 ]] && [[ "$num" -le "$repo_count" ]]; then
+                                name_var="repo_name_$num"
+                                url_var="repo_url_$num"
+                                repo_name="${!name_var}"
+                                repo_url="${!url_var}"
+
+                                if [[ -d ~/dev/"$repo_name" ]]; then
+                                    warn "Skipping $repo_name (already exists)"
+                                else
+                                    info "Cloning $repo_name..."
+                                    git clone "$repo_url" ~/dev/"$repo_name" || warn "Failed to clone $repo_name"
+                                fi
+                            else
+                                warn "Invalid repository number: $num"
+                            fi
+                        done
+                        success "Selected repositories cloned"
+                        ;;
+                    n|N)
+                        info "Skipping repository cloning"
+                        ;;
+                    *)
+                        warn "Invalid choice - skipping repository cloning"
+                        ;;
+                esac
+            else
+                warn "No repositories found in your GitHub account"
+            fi
+        else
+            warn "GitHub CLI not authenticated"
+            info "Run 'gh auth login' after setup to authenticate"
+            info "Then manually clone repos: cd ~/dev && gh repo clone <repo-name>"
+        fi
+    fi
+else
+    warn "GitHub CLI not available yet"
+    info "gh will be installed by nix-darwin"
+    info "Run this step manually after setup: gh auth login && cd ~/dev && gh repo clone <repo-name>"
+fi
+
+# Step 10: Run validation
 step "Running system validation"
 
 if [[ -x ~/.config/scripts/validate-system.fish ]]; then
@@ -296,6 +413,7 @@ echo "  - SuperClaude framework configured"
 echo "  - Fish shell configured"
 echo "  - Runtime versions installed"
 echo "  - Services configured"
+echo "  - Development directory set up"
 echo ""
 echo "📋 Manual Steps Remaining:"
 echo ""
@@ -304,8 +422,9 @@ echo ""
 echo "  2. Grant Terminal Full Disk Access:"
 echo "     System Settings → Privacy & Security → Full Disk Access"
 echo ""
-echo "  3. GitHub CLI authentication:"
+echo "  3. GitHub CLI authentication (if not done during setup):"
 echo "     gh auth login"
+echo "     Then clone any remaining repos: cd ~/dev && gh repo clone <repo-name>"
 echo ""
 echo "  4. 1Password CLI sign-in:"
 echo "     op signin"
