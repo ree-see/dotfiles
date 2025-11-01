@@ -97,11 +97,13 @@ auto-format = true
  formatter = { command = "prettier", args = ["--parser", "yaml"] }
  auto-format = true
 
- # Markdown for documentation
+ # Markdown for documentation with soft-wrap for readability in TUI
  [[language]]
  name = "markdown"
- formatter = { command = "prettier", args = ["--parser", "markdown"] }
+ formatter = { command = "prettier", args = ["--parser", "markdown", "--prose-wrap", "always", "--print-width", "85"] }
  auto-format = true
+ text-width = 85  # Match ruler setting
+ soft-wrap.enable = true  # Wrap long lines visually (no horizontal scroll needed)
 
 # Language server configurations
 [language-server.typescript-language-server]
