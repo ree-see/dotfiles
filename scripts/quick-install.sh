@@ -10,7 +10,7 @@ echo ""
 # Install Nix if not present
 if ! command -v nix &> /dev/null; then
     echo "📦 Installing Nix package manager..."
-    curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+    curl -fsSL https://install.determinate.systems/nix | sh -s -- install
     echo "✅ Nix installed"
     echo ""
     echo "⚠️  Please restart your terminal and run this command again:"
@@ -30,14 +30,14 @@ else
 fi
 
 # Run the full bootstrap script
-if [ -x "$HOME/.config/scripts/bootstrap-new-mac.sh" ]; then
-    echo "🎯 Launching automated setup script..."
+if [ -x "$HOME/.config/scripts/bootstrap-new-mac-improved.sh" ]; then
+    echo "🎯 Launching automated setup script v2.0..."
     echo ""
-    bash "$HOME/.config/scripts/bootstrap-new-mac.sh"
+    bash "$HOME/.config/scripts/bootstrap-new-mac-improved.sh"
 else
     echo "❌ Bootstrap script not found"
     echo "Please run manually:"
     echo "  cd ~/.config"
-    echo "  ./scripts/bootstrap-new-mac.sh"
+    echo "  ./scripts/bootstrap-new-mac-improved.sh"
     exit 1
 fi
