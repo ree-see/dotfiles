@@ -77,9 +77,11 @@ This automates:
 │   ├── agents/               # Specialist agent personas
 │   └── commands/sc/          # Slash commands
 ├── scripts/
-│   ├── bootstrap-new-mac.fish  # Automated setup script
-│   ├── quick-install.sh        # One-line installer
-│   └── validate-system.fish    # System validation
+│   ├── bootstrap-new-mac-improved.sh  # Automated setup script v2.0
+│   ├── quick-install.sh               # One-line installer
+│   ├── setup-ruby.fish                # Ruby environment setup
+│   ├── validate-ruby.fish             # Ruby validation
+│   └── validate-system.fish           # System validation
 └── templates/                 # Project templates
 ```
 
