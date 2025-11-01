@@ -24,7 +24,7 @@ LOGFILE="$HOME/.bootstrap-$(date +%Y%m%d-%H%M%S).log"
 FISH_PATH="/run/current-system/sw/bin/fish"
 
 STEP=0
-TOTAL_STEPS=11
+TOTAL_STEPS=12
 
 # Step tracking
 declare -A STEP_STATUS
@@ -467,6 +467,37 @@ if [[ "$(uname -m)" != "arm64" ]]; then
     warn "Not Apple Silicon - some features may differ"
 fi
 
+# Check FileVault status
+info "Checking FileVault encryption status..."
+filevault_status=$(fdesetup status 2>/dev/null)
+
+if echo "$filevault_status" | grep -q "FileVault is On"; then
+    success "✓ FileVault is enabled"
+elif echo "$filevault_status" | grep -q "FileVault is Off"; then
+    warn "⚠️  FileVault is currently disabled"
+    echo ""
+    info "FileVault provides full-disk encryption for security"
+    info "Nix installation works best with FileVault enabled"
+    echo ""
+    info "To enable FileVault:"
+    echo "  1. Open System Settings"
+    echo "  2. Go to Privacy & Security"
+    echo "  3. Scroll down to FileVault"
+    echo "  4. Click 'Turn On FileVault'"
+    echo "  5. Restart when prompted"
+    echo ""
+
+    if ! confirm "Continue without FileVault? (not recommended for production machines)"; then
+        mark_step_skipped "$CURRENT_STEP"
+        error "Setup cancelled. Please enable FileVault and run this script again."
+    else
+        warn "Proceeding without FileVault encryption"
+    fi
+else
+    warn "Could not determine FileVault status"
+    info "FileVault check: $filevault_status"
+fi
+
 success "Prerequisites check passed"
 mark_step_complete "$CURRENT_STEP"
 
@@ -568,6 +599,96 @@ Recovery steps:
   3. Try manual clone: git clone $DOTFILES_REPO $DOTFILES_DIR
   4. Retry this script"
     fi
+fi
+
+# Step 3a: Create symlinks for dotfiles
+step "Creating dotfile symlinks"
+CURRENT_STEP="create_symlinks"
+
+info "Setting up symlinks for centralized dotfile management"
+echo ""
+echo "Creating symlinks:"
+echo "  ~/.gitconfig → ~/.config/git/config"
+echo "  ~/.ssh/config → ~/.config/ssh/config"
+echo "  ~/.tool-versions → ~/.config/asdf/.tool-versions"
+echo "  ~/.zshenv → ~/.config/zsh/.zshenv"
+echo "  ~/.zprofile → ~/.config/zsh/.zprofile"
+echo ""
+
+symlink_count=0
+skipped_count=0
+
+# Function to create symlink safely
+create_symlink() {
+    local target=$1
+    local link_name=$2
+
+    if [[ -L "$link_name" ]]; then
+        local current_target
+        current_target=$(readlink "$link_name")
+        if [[ "$current_target" == "$target" ]]; then
+            info "✓ $link_name already points to $target"
+            ((symlink_count++))
+            return 0
+        else
+            warn "⚠ $link_name points to different target: $current_target"
+            if confirm "Update symlink to point to $target?"; then
+                rm "$link_name"
+                ln -s "$target" "$link_name"
+                success "✓ Updated symlink: $link_name"
+                ((symlink_count++))
+            else
+                ((skipped_count++))
+            fi
+        fi
+    elif [[ -e "$link_name" ]]; then
+        warn "⚠ $link_name exists and is not a symlink"
+        if confirm "Backup and replace with symlink?"; then
+            mv "$link_name" "$link_name.backup.$(date +%Y%m%d-%H%M%S)"
+            ln -s "$target" "$link_name"
+            success "✓ Created symlink: $link_name (backup made)"
+            ((symlink_count++))
+        else
+            ((skipped_count++))
+        fi
+    else
+        # Ensure parent directory exists for target
+        local target_dir
+        target_dir=$(dirname "$target")
+        if [[ ! -d "$target_dir" ]]; then
+            warn "Target directory missing: $target_dir"
+            ((skipped_count++))
+            return 1
+        fi
+
+        # Create parent directory for link if needed
+        local link_dir
+        link_dir=$(dirname "$link_name")
+        mkdir -p "$link_dir"
+
+        ln -s "$target" "$link_name"
+        success "✓ Created symlink: $link_name"
+        ((symlink_count++))
+    fi
+}
+
+# Create all symlinks
+create_symlink "$HOME/.config/git/config" "$HOME/.gitconfig"
+create_symlink "$HOME/.config/ssh/config" "$HOME/.ssh/config"
+create_symlink "$HOME/.config/asdf/.tool-versions" "$HOME/.tool-versions"
+create_symlink "$HOME/.config/zsh/.zshenv" "$HOME/.zshenv"
+create_symlink "$HOME/.config/zsh/.zprofile" "$HOME/.zprofile"
+
+echo ""
+if [[ $symlink_count -eq 5 ]]; then
+    success "All 5 dotfile symlinks created successfully"
+    mark_step_complete "$CURRENT_STEP"
+elif [[ $symlink_count -gt 0 ]]; then
+    success "$symlink_count symlinks created, $skipped_count skipped"
+    mark_step_complete "$CURRENT_STEP"
+else
+    warn "No symlinks were created"
+    mark_step_skipped "$CURRENT_STEP"
 fi
 
 # Step 4: Build nix-darwin configuration
@@ -849,6 +970,53 @@ if [[ -x ~/.config/scripts/validate-system.fish ]]; then
         # Try to run with fish if available, otherwise skip
         if command_exists fish; then
             fish ~/.config/scripts/validate-system.fish
+
+            # Additional validation: Check symlinks
+            echo ""
+            info "Validating dotfile symlinks..."
+            local symlink_valid=true
+
+            if [[ -L ~/.gitconfig ]] && [[ "$(readlink ~/.gitconfig)" == "$HOME/.config/git/config" ]]; then
+                success "✓ ~/.gitconfig symlink is correct"
+            else
+                warn "✗ ~/.gitconfig symlink is incorrect or missing"
+                symlink_valid=false
+            fi
+
+            if [[ -L ~/.ssh/config ]] && [[ "$(readlink ~/.ssh/config)" == "$HOME/.config/ssh/config" ]]; then
+                success "✓ ~/.ssh/config symlink is correct"
+            else
+                warn "✗ ~/.ssh/config symlink is incorrect or missing"
+                symlink_valid=false
+            fi
+
+            if [[ -L ~/.tool-versions ]] && [[ "$(readlink ~/.tool-versions)" == "$HOME/.config/asdf/.tool-versions" ]]; then
+                success "✓ ~/.tool-versions symlink is correct"
+            else
+                warn "✗ ~/.tool-versions symlink is incorrect or missing"
+                symlink_valid=false
+            fi
+
+            if [[ -L ~/.zshenv ]] && [[ "$(readlink ~/.zshenv)" == "$HOME/.config/zsh/.zshenv" ]]; then
+                success "✓ ~/.zshenv symlink is correct"
+            else
+                warn "✗ ~/.zshenv symlink is incorrect or missing"
+                symlink_valid=false
+            fi
+
+            if [[ -L ~/.zprofile ]] && [[ "$(readlink ~/.zprofile)" == "$HOME/.config/zsh/.zprofile" ]]; then
+                success "✓ ~/.zprofile symlink is correct"
+            else
+                warn "✗ ~/.zprofile symlink is incorrect or missing"
+                symlink_valid=false
+            fi
+
+            if [[ "$symlink_valid" == true ]]; then
+                success "All dotfile symlinks validated successfully"
+            else
+                warn "Some symlink issues detected - see above"
+            fi
+
             mark_step_complete "$CURRENT_STEP"
         else
             warn "Fish not available yet - validation skipped"
@@ -877,6 +1045,7 @@ print_summary_report
 echo "✅ Completed:"
 echo "  - Nix package manager installed"
 echo "  - Dotfiles repository cloned"
+echo "  - Dotfile symlinks created for centralized management"
 echo "  - nix-darwin configuration built"
 echo "  - SuperClaude framework configured"
 echo "  - Fish shell configured"
@@ -884,6 +1053,15 @@ echo "  - Runtime versions installed"
 echo "  - Services configured"
 echo "  - SSH authentication configured (1Password)"
 echo "  - Development directory set up"
+echo ""
+echo "🔗 Dotfile Symlinks:"
+echo "  All configuration files are now centralized in ~/.config"
+echo "  Symlinks created:"
+echo "    ~/.gitconfig → ~/.config/git/config"
+echo "    ~/.ssh/config → ~/.config/ssh/config"
+echo "    ~/.tool-versions → ~/.config/asdf/.tool-versions"
+echo "    ~/.zshenv → ~/.config/zsh/.zshenv"
+echo "    ~/.zprofile → ~/.config/zsh/.zprofile"
 echo ""
 echo "📋 Manual Steps Remaining:"
 echo ""
