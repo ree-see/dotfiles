@@ -77,6 +77,7 @@
             pkgs._1password-cli # 1Password CLI
             pkgs.pre-commit # Git pre-commit hook framework
             pkgs.asdf-vm # Multiple runtime version manager
+            pkgs.doctl
 
             # Development languages and runtimes
             pkgs.nodejs # Node.js runtime
@@ -89,6 +90,7 @@
 
             # Development monitoring
             pkgs.watchman # File watching service
+            pkgs.docker
 
             # JavaScript/TypeScript development tools
             pkgs.nodePackages.typescript-language-server
@@ -119,7 +121,7 @@
               "1password" # Password manager desktop app
               "claude" # AI assistant desktop app
               "google-chrome" # Web browser
-              "raycast" # Productivity launcher
+              # "raycast" # Productivity launcher
               "spotify" # Music streaming
               "warp" # Modern terminal with AI features
               "wezterm" # Advanced terminal emulator

@@ -30,7 +30,7 @@ if status is-interactive
         fish_add_path /opt/homebrew/opt/postgresql@16/bin
     end
 
-    zoxide init fish | source
+    zoxide init fish --cmd cd | source
 end
 
 # Environment variables
