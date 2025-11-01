@@ -484,7 +484,7 @@ elif command_exists nix; then
         mark_step_complete "$CURRENT_STEP"
     else
         info "Installing Nix..."
-        if retry_command bash -c "curl -fsSL https://install.determinate.systems/nix | sh -s -- install"; then
+        if retry_command bash -c "curl --proto '=https' --tlsv1.2 -sSf -L https://nixos.org/nix/install | sh"; then
             success "Nix installed"
             mark_step_complete "$CURRENT_STEP"
         else
@@ -494,7 +494,7 @@ elif command_exists nix; then
     fi
 else
     info "Installing Nix (this may take a few minutes)..."
-    if retry_command bash -c "curl -fsSL https://install.determinate.systems/nix | sh -s -- install"; then
+    if retry_command bash -c "curl --proto '=https' --tlsv1.2 -sSf -L https://nixos.org/nix/install | sh"; then
         success "Nix installed successfully"
         mark_step_complete "$CURRENT_STEP"
 
@@ -507,8 +507,8 @@ else
 
 Recovery steps:
   1. Check your internet connection
-  2. Visit https://github.com/DeterminateSystems/nix-installer
-  3. For macOS: Download package from https://install.determinate.systems/determinate-pkg/stable/Universal
+  2. Visit https://nixos.org/download/
+  3. Try manual installation: sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install)
   4. Retry this script"
     fi
 fi

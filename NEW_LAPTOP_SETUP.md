@@ -48,10 +48,10 @@ If you prefer manual control or the automated script fails, follow these steps:
 ## Step 1: Install Nix Package Manager
 
 ```bash
-curl -fsSL https://install.determinate.systems/nix | sh -s -- install
+sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install)
 ```
 
-**Alternative for macOS**: Download the [macOS package installer](https://install.determinate.systems/determinate-pkg/stable/Universal)
+**Alternative for macOS**: Download the [macOS package installer](https://nixos.org/download/#nix-install-macos)
 
 Restart terminal after installation.
 

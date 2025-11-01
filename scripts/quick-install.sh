@@ -10,7 +10,7 @@ echo ""
 # Install Nix if not present
 if ! command -v nix &> /dev/null; then
     echo "📦 Installing Nix package manager..."
-    curl -fsSL https://install.determinate.systems/nix | sh -s -- install
+    sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install)
     echo "✅ Nix installed"
     echo ""
     echo "⚠️  Please restart your terminal and run this command again:"
