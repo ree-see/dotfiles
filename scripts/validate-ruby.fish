@@ -11,3 +11,6 @@ function validate_ruby_env
     echo "Gem environment:"
     gem env | grep -E "(RUBY VERSION|INSTALLATION DIRECTORY|EXECUTABLE DIRECTORY)"
 end
+
+# Execute validation
+validate_ruby_env

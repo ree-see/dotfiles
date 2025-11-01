@@ -725,6 +725,15 @@ if command_exists asdf; then
             info "Setting Ruby 3.3.6 as global default..."
             asdf global ruby 3.3.6
             success "Ruby 3.3.6 installed and configured"
+
+            # Validate Ruby installation
+            if [[ -x ~/.config/scripts/validate-ruby.fish ]] && command_exists fish; then
+                echo ""
+                info "Validating Ruby environment..."
+                fish ~/.config/scripts/validate-ruby.fish || warn "Ruby validation script had issues"
+                echo ""
+            fi
+
             mark_step_complete "$CURRENT_STEP"
         else
             warn "Ruby installation failed"
