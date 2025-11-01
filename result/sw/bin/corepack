@@ -1,4 +1,0 @@
-#!/nix/store/9yqq8szyz3qx8q6xlv1s3arhw4112wc8-nodejs-22.18.0/bin/node
-process.env.COREPACK_ENABLE_DOWNLOAD_PROMPT??='0';
-require('module').enableCompileCache?.();
-require('./lib/corepack.cjs').runMain(process.argv.slice(2));
