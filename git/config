@@ -1,0 +1,9 @@
+# This is Git's per-user configuration file.
+[user]
+	email = j.risse14@proton.me
+	name = Jackson Risse
+# Please adapt and uncomment the following lines:
+#	name = Jackson Risse
+#	email = j.risse14@proton.me
+[core]
+	editor = hx

@@ -1,4 +1,5 @@
 ./result
+result/
 
 # Claude Code runtime files (exclude from git)
 claude/debug/
