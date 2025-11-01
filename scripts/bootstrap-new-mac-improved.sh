@@ -119,7 +119,7 @@ command_exists() {
 # Retry wrapper for network operations
 retry_command() {
     local max_attempts=3
-    local timeout=5
+    local timeout=2  # Reduced from 5s to 2s for faster recovery on slow networks
     local attempt=1
     local exit_code=0
 
@@ -352,7 +352,7 @@ clone_github_repositories() {
                     warn "Skipping $repo_name (already exists)"
                 else
                     info "Cloning $repo_name..."
-                    if retry_command git clone "$repo_url" ~/dev/"$repo_name"; then
+                    if retry_command git clone --depth 1 --single-branch "$repo_url" ~/dev/"$repo_name"; then
                         success "Cloned $repo_name"
                     else
                         warn "Failed to clone $repo_name after 3 attempts"
@@ -381,7 +381,7 @@ clone_github_repositories() {
                         warn "Skipping $repo_name (already exists)"
                     else
                         info "Cloning $repo_name..."
-                        if retry_command git clone "$repo_url" ~/dev/"$repo_name"; then
+                        if retry_command git clone --depth 1 --single-branch "$repo_url" ~/dev/"$repo_name"; then
                             success "Cloned $repo_name"
                         else
                             warn "Failed to clone $repo_name after 3 attempts"
@@ -484,7 +484,7 @@ elif command_exists nix; then
         mark_step_complete "$CURRENT_STEP"
     else
         info "Installing Nix..."
-        if retry_command bash -c "curl --proto '=https' --tlsv1.2 -sSf -L https://nixos.org/nix/install | sh"; then
+        if retry_command bash -c "curl --proto '=https' --tlsv1.2 -sSf -L --retry 10 --retry-delay 2 --connect-timeout 10 --max-time 300 https://nixos.org/nix/install | sh"; then
             success "Nix installed"
             mark_step_complete "$CURRENT_STEP"
         else
@@ -494,7 +494,7 @@ elif command_exists nix; then
     fi
 else
     info "Installing Nix (this may take a few minutes)..."
-    if retry_command bash -c "curl --proto '=https' --tlsv1.2 -sSf -L https://nixos.org/nix/install | sh"; then
+    if retry_command bash -c "curl --proto '=https' --tlsv1.2 -sSf -L --retry 10 --retry-delay 2 --connect-timeout 10 --max-time 300 https://nixos.org/nix/install | sh"; then
         success "Nix installed successfully"
         mark_step_complete "$CURRENT_STEP"
 
@@ -542,7 +542,7 @@ elif [[ -d $DOTFILES_DIR ]]; then
     warn "~/.config exists but is not a git repository"
     if confirm "Backup and replace with dotfiles repository?"; then
         mv "$DOTFILES_DIR" "$DOTFILES_DIR.backup.$(date +%Y%m%d-%H%M%S)"
-        if retry_command git clone "$DOTFILES_REPO" "$DOTFILES_DIR"; then
+        if retry_command git clone --depth 1 --single-branch "$DOTFILES_REPO" "$DOTFILES_DIR"; then
             success "Dotfiles cloned (backup created)"
             mark_step_complete "$CURRENT_STEP"
         else
@@ -555,7 +555,7 @@ elif [[ -d $DOTFILES_DIR ]]; then
     fi
 else
     info "Cloning dotfiles repository..."
-    if retry_command git clone "$DOTFILES_REPO" "$DOTFILES_DIR"; then
+    if retry_command git clone --depth 1 --single-branch "$DOTFILES_REPO" "$DOTFILES_DIR"; then
         success "Dotfiles cloned successfully"
         mark_step_complete "$CURRENT_STEP"
     else
@@ -602,9 +602,19 @@ if ! confirm "Are you signed in to the Mac App Store?"; then
         info "Sign in to Mac App Store, then run: cd ~/.config && darwin-rebuild switch --flake .#macbook"
     elif confirm "Start nix-darwin build?"; then
         cd "$DOTFILES_DIR" || error "Failed to change to $DOTFILES_DIR directory"
-        info "Running nix-darwin build (Mac App Store apps may fail)..."
+        info "Running nix-darwin build with optimized settings (Mac App Store apps may fail)..."
         info "⏳ This will take 15-30 minutes. Progress will be shown below..."
-        if nix run nix-darwin -- switch --flake .#macbook; then
+        info "Optimization: Using all CPU cores and parallel downloads"
+
+        # Configure Nix for optimal performance with 48GB RAM
+        export NIX_CONFIG="max-jobs = auto
+cores = 0
+http-connections = 128
+connect-timeout = 10
+stalled-download-timeout = 300
+max-silent-time = 1800"
+
+        if nix run nix-darwin --max-jobs auto -- switch --flake .#macbook --keep-going; then
             success "nix-darwin build completed successfully"
             mark_step_complete "$CURRENT_STEP"
         else
@@ -617,12 +627,24 @@ Recovery steps:
   3. Try manual build: cd ~/.config && nix run nix-darwin -- switch --flake .#macbook
   4. Check logs at: $LOGFILE"
         fi
+
+        unset NIX_CONFIG
     fi
 elif confirm "Start nix-darwin build?"; then
     cd "$DOTFILES_DIR" || error "Failed to change to $DOTFILES_DIR directory"
-    info "Running nix-darwin build..."
+    info "Running nix-darwin build with optimized settings..."
     info "⏳ This will take 15-30 minutes. Progress will be shown below..."
-    if nix run nix-darwin -- switch --flake .#macbook; then
+    info "Optimization: Using all CPU cores and parallel downloads"
+
+    # Configure Nix for optimal performance with 48GB RAM
+    export NIX_CONFIG="max-jobs = auto
+cores = 0
+http-connections = 128
+connect-timeout = 10
+stalled-download-timeout = 300
+max-silent-time = 1800"
+
+    if nix run nix-darwin --max-jobs auto -- switch --flake .#macbook --keep-going; then
         success "nix-darwin build completed successfully"
         mark_step_complete "$CURRENT_STEP"
     else
@@ -634,6 +656,8 @@ Recovery steps:
   2. Try manual build: cd ~/.config && nix run nix-darwin -- switch --flake .#macbook
   3. Check logs at: $LOGFILE"
     fi
+
+    unset NIX_CONFIG
 fi
 
 # Step 5: Create SuperClaude symlink
