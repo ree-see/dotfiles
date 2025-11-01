@@ -22,6 +22,13 @@ rulers = [85]
 # Show diagnostics at end of line as hints
 end-of-line-diagnostics = "hint"
 
+[editor.soft-wrap]
+# Enable soft-wrap to prevent horizontal scrolling in TUI
+enable = true
+max-wrap = 25  # Maximum indentation for wrapped lines
+max-indent-retain = 40  # Don't indent wrapped lines too much
+wrap-indicator = "↪ "  # Visual indicator for wrapped lines
+
 [editor.lsp]
 # Display LSP server messages for debugging and status updates
 display-messages = true
