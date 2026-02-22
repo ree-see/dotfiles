@@ -9,7 +9,7 @@ local config = wezterm.config_builder()
 -- ============================================================================
 
 -- Theme: Dark and minimal
-config.color_scheme = "Tokyo Night Storm"
+config.color_scheme = "Tango (terminal sexy)"
 
 -- Font configuration
 config.font = wezterm.font("JetBrains Mono")
@@ -158,6 +158,7 @@ end)
 -- ============================================================================
 
 config.keys = {
+	{key="Enter", mods="SHIFT", action=wezterm.action{SendString="\x1b\r"}},
 	-- Copy and paste
 	{ key = "c", mods = "CMD", action = wezterm.action.CopyTo("Clipboard") },
 	{ key = "v", mods = "CMD", action = wezterm.action.PasteFrom("Clipboard") },

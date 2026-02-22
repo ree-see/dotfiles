@@ -4,7 +4,6 @@
 # Key features:
 # - Custom development commands (rebuild, config, mkcd)
 # - Helix editor as default
-# - Zellij integration (optional autostart)
 #
 # Custom functions are defined in fish/functions/ directory
 
@@ -30,38 +29,76 @@ if status is-interactive
         fish_add_path /opt/homebrew/opt/postgresql@16/bin
     end
 
+    # Add Solana CLI to PATH
+    if test -d $HOME/.local/share/solana/install/active_release/bin
+        fish_add_path $HOME/.local/share/solana/install/active_release/bin
+    end
+
     zoxide init fish --cmd cd | source
 end
 
 # Environment variables
 set -gx EDITOR /run/current-system/sw/bin/hx # Set Helix as default editor
 
-# ============================================
-# Claude Code MCP Server API Keys
-# ============================================
-
-# Tavily API Key (Required for web search, extraction, crawling)
-# Get your key from: https://app.tavily.com/
-# Usage: Web search, content extraction, site crawling, site mapping
-set -gx TAVILY_API_KEY "YOUR_TAVILY_API_KEY_HERE"
-
-# Context7 API Key (Optional - provides higher rate limits and private repo access)
-# Get your key from: https://context7.com/dashboard
-# Usage: Up-to-date library documentation and code examples
-# set -gx CONTEXT7_API_KEY "YOUR_CONTEXT7_API_KEY_HERE"
-
-# 21st.dev Magic API Key (Required for UI component generation)
-# Get your key from: https://21st.dev/magic/console
-# Usage: UI component generation from 21st.dev library
-# set -gx TWENTY_FIRST_API_KEY "YOUR_21ST_DEV_API_KEY_HERE"
-
-# ============================================
-
 source /Users/reesee/.config/op/plugins.sh
 
 # pnpm
-set -gx PNPM_HOME "/Users/reesee/Library/pnpm"
+set -gx PNPM_HOME /Users/reesee/Library/pnpm
 if not string match -q -- $PNPM_HOME $PATH
-  set -gx PATH "$PNPM_HOME" $PATH
+    set -gx PATH "$PNPM_HOME" $PATH
 end
 # pnpm end
+
+# Created by `pipx` on 2025-11-01 23:56:39
+set PATH $PATH /Users/reesee/Library/Python/3.9/bin
+
+# bun
+set --export BUN_INSTALL "$HOME/.bun"
+set --export PATH $BUN_INSTALL/bin $PATH
+
+# ~/.config/fish/config.fish
+
+function faucet
+    source ~/.config/dehouse/privy.env
+    uv run --project ~/dev/faucet ~/dev/faucet/faucet.py $argv
+end
+
+function fish_prompt
+    set -l last_status $status
+
+    # Line 1: [time] user@host cwd [jobs]
+    set_color brblack
+    echo -n '['(date +%H:%M:%S)'] '
+    set_color green
+    echo -n $USER'@'(hostname -s)' '
+    set_color cyan
+    echo -n (prompt_pwd)
+
+    # Job count
+    set -l jobs (jobs -p | wc -l | string trim)
+    if test $jobs -gt 0
+        set_color red
+        echo -n " [$jobs]"
+    end
+
+    echo # newline
+
+    # Line 2: (branch *) >
+    set -l branch (git branch --show-current 2>/dev/null)
+    if test -n "$branch"
+        set_color yellow
+        echo -n "($branch"
+
+        # Dirty status
+        if not git diff --quiet 2>/dev/null; or not git diff --cached --quiet 2>/dev/null
+            set_color red
+            echo -n " *"
+        end
+
+        set_color yellow
+        echo -n ") "
+    end
+
+    set_color normal
+    echo -n '> '
+end

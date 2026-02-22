@@ -1,2 +1,9 @@
 Host *
 	IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+Host reesee-vps
+	HostName 76.13.124.201
+	User root
+Host dehouse-prod
+	HostName 134.199.212.88
+	User root
+	IdentityFile ~/.ssh/id_ed25519

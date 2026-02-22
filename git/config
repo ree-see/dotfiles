@@ -1,9 +1,24 @@
 # This is Git's per-user configuration file.
 [user]
-	email = j.risse14@proton.me
-	name = Jackson Risse
+	email = 45549169+ree-see@users.noreply.github.com
+	name = ree-see
 # Please adapt and uncomment the following lines:
 #	name = Jackson Risse
 #	email = j.risse14@proton.me
 [core]
 	editor = hx
+[credential "https://github.com"]
+	helper = 
+	helper = !/run/current-system/sw/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/run/current-system/sw/bin/gh auth git-credential
+[pull]
+	rebase = true
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[alias]
+	pullsafe = !git stash && git pull && git stash pop

@@ -1,7 +1,7 @@
 ./result
 result/
 
-# Claude Code runtime files (exclude from git)
+# Claude Code runtime files
 claude/debug/
 claude/file-history/
 claude/history.jsonl
@@ -14,3 +14,23 @@ claude/.superclaude-metadata.json
 claude/.update_check
 claude/backups/
 claude/projects/
+
+# Sensitive — API keys, tokens, keypairs
+cf/
+dh/
+dehouse/
+solana/
+claude/mcp-config.json
+zed/settings.json
+zed/settings_backup.json
+
+# Opencode — local tool, node_modules
+opencode/node_modules/
+
+# Auto-generated
+fish/completions/bun.fish
+npm-globals.txt
+
+# Zed runtime/binary data
+zed/conversations/
+zed/prompts/prompts-library-db.0.mdb/
