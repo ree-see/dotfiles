@@ -45,14 +45,27 @@ fi
 echo "==> Applying macOS defaults..."
 bash "$HOME/.config/scripts/macos-defaults.sh"
 
-# ── 8. GUI apps (manual) ──────────────────────────────────────────────────────
-echo ""
-echo "==> Install these manually:"
-echo "    1Password  → https://1password.com"
-echo "    WezTerm    → https://wezfurlong.org/wezterm"
-echo "    Warp       → https://warp.dev"
-echo "    Chrome     → https://google.com/chrome"
-echo "    Spotify    → https://spotify.com"
+# ── 8. Casks (requires Homebrew as fallback) ──────────────────────────────────
+if command -v brew &>/dev/null; then
+  echo "==> Installing casks via Homebrew..."
+  brew install --cask 1password google-chrome mactex opencode-desktop spotify warp wezterm
+else
+  echo "==> Install these manually (zerobrew doesn't support casks yet):"
+  echo "    1Password       → https://1password.com"
+  echo "    Google Chrome   → https://google.com/chrome"
+  echo "    MacTeX          → https://tug.org/mactex"
+  echo "    OpenCode        → https://opencode.ai"
+  echo "    Spotify         → https://spotify.com"
+  echo "    Warp            → https://warp.dev"
+  echo "    WezTerm         → https://wezfurlong.org/wezterm"
+fi
+
+# ── 9. Non-package-manager installs ───────────────────────────────────────────
+echo "==> Installing bun..."
+curl -fsSL https://bun.sh/install | bash
+
+echo "==> Installing Solana CLI..."
+sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"
 
 echo ""
 echo "Done. Restart your terminal."
