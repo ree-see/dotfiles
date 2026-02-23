@@ -94,9 +94,18 @@ brew "docker"
 # npm install -g yarn
 
 # ══════════════════════════════════════════════════════════════════════════════
+# cargo bins — cargo install <name>  (requires rustup first)
+# ══════════════════════════════════════════════════════════════════════════════
+# cargo install cargo-watch
+# cargo install cargo-watch
+# cargo install mdbook
+# cargo install rustlings
+# cargo install dx              # Dioxus CLI
+# cargo install --git https://github.com/coral-xyz/anchor avm
+#   avm install latest && avm use latest   # installs anchor
+
+# ══════════════════════════════════════════════════════════════════════════════
 # Manual installs (scripts, not package managers)
 # ══════════════════════════════════════════════════════════════════════════════
 # bun       → curl -fsSL https://bun.sh/install | bash
 # solana    → sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"
-# anchor    → cargo install --git https://github.com/coral-xyz/anchor avm
-#             avm install latest && avm use latest
