@@ -85,10 +85,18 @@ brew "docker"
 # brew install --cask wezterm
 
 # ══════════════════════════════════════════════════════════════════════════════
+# npm globals — npm install -g <name>
+# ══════════════════════════════════════════════════════════════════════════════
+# npm install -g @anthropic-ai/claude-code
+# npm install -g @morphllm/morphmcp
+# npm install -g @upstash/context7-mcp
+# npm install -g tavily-mcp
+# npm install -g yarn
+
+# ══════════════════════════════════════════════════════════════════════════════
 # Manual installs (scripts, not package managers)
 # ══════════════════════════════════════════════════════════════════════════════
 # bun       → curl -fsSL https://bun.sh/install | bash
 # solana    → sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"
 # anchor    → cargo install --git https://github.com/coral-xyz/anchor avm
 #             avm install latest && avm use latest
-# claude    → npm install -g @anthropic-ai/claude-code
