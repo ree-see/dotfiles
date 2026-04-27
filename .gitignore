@@ -10,7 +10,6 @@ claude/session-env/
 claude/shell-snapshots/
 claude/statsig/
 claude/todos/
-claude/.superclaude-metadata.json
 claude/.update_check
 claude/backups/
 claude/projects/
@@ -23,6 +22,7 @@ solana/
 claude/mcp-config.json
 zed/settings.json
 zed/settings_backup.json
+gh/hosts.yml
 
 # Opencode — local tool, node_modules
 opencode/node_modules/

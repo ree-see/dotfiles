@@ -34,6 +34,11 @@ if status is-interactive
         fish_add_path $HOME/.local/share/solana/install/active_release/bin
     end
 
+    # Add Go binaries to PATH
+    if test -d $HOME/go/bin
+        fish_add_path $HOME/go/bin
+    end
+
     zoxide init fish --cmd cd | source
 end
 
@@ -102,3 +107,6 @@ function fish_prompt
     set_color normal
     echo -n '> '
 end
+
+# OpenClaw Completion
+source "/Users/reesee/.openclaw/completions/openclaw.fish"

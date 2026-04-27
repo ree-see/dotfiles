@@ -1,6 +1,23 @@
 {
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {},
+  "model": "ollama/gemma4:31b",
   "plugin": [
-    "oh-my-opencode"
+    "opencode-claude-auth"
   ],
-  "$schema": "https://opencode.ai/config.json"
+  "provider": {
+    "ollama": {
+      "models": {
+        "gemma4:31b": {
+          "_launch": true,
+          "name": "gemma4:31b"
+        }
+      },
+      "name": "Ollama",
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "baseURL": "http://127.0.0.1:11434/v1"
+      }
+    }
+  }
 }

@@ -137,9 +137,7 @@ set config_files \
     "$HOME/.config/nix/flake.nix" \
     "$HOME/.config/fish/config.fish" \
     "$HOME/.config/helix/config.toml" \
-    "$HOME/.config/wezterm/wezterm.lua" \
-    "$HOME/.config/claude/RULES.md" \
-    "$HOME/.config/claude/FLAGS.md"
+    "$HOME/.config/wezterm/wezterm.lua"
 
 for file in $config_files
     if test -f $file
@@ -149,22 +147,7 @@ for file in $config_files
     end
 end
 
-# Test 8: SuperClaude framework symlink
-echo ""
-echo "🔗 Testing SuperClaude Framework..."
-if test -L $HOME/.claude
-    if test (readlink $HOME/.claude) = "$HOME/.config/claude"
-        test_pass "SuperClaude symlink: ~/.claude -> ~/.config/claude"
-    else
-        test_fail "SuperClaude symlink points to wrong location"
-    end
-else if test -d $HOME/.claude
-    test_warn "~/.claude is a directory, not a symlink (expected symlink to ~/.config/claude)"
-else
-    test_fail "~/.claude does not exist"
-end
-
-# Test 9: System defaults (sample check)
+# Test 8: System defaults (sample check)
 echo ""
 echo "⚙️  Testing System Defaults..."
 if defaults read com.apple.dock autohide 2>/dev/null | grep -q "1"

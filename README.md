@@ -28,7 +28,6 @@ This automates:
 - **Declarative System Management**: Everything managed through nix-darwin flakes
 - **Fish Shell**: Primary shell with custom commands
 - **Modern Development Tools**: Helix editor (custom build), WezTerm/Warp terminals
-- **SuperClaude Framework**: Advanced Claude Code integration
 - **Safe System Rebuilds**: Built-in rollback and generation management
 - **Touch ID Integration**: Secure sudo authentication
 - **Homebrew Integration**: Seamless integration with Mac-native apps
@@ -70,12 +69,9 @@ This automates:
 ├── helix/                     # Helix editor configuration
 ├── wezterm/
 │   └── wezterm.lua           # WezTerm terminal configuration
-├── claude/                    # SuperClaude framework (symlinked to ~/.claude)
-│   ├── RULES.md              # Core behavioral rules
-│   ├── FLAGS.md              # Mode activation flags
-│   ├── MODE_*.md             # Behavioral modes
+├── claude/                    # Claude Code configuration
 │   ├── agents/               # Specialist agent personas
-│   └── commands/sc/          # Slash commands
+│   └── commands/             # Slash commands
 ├── scripts/
 │   ├── bootstrap-new-mac-improved.sh  # Automated setup script v2.0
 │   ├── quick-install.sh               # One-line installer
