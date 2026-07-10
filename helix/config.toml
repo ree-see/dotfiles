@@ -10,17 +10,19 @@
 #
 # See languages.toml for language-specific settings
 
-theme = "mytheme"
+theme = "zed_onedark"
 
 [editor]
-# Display relative line numbers for easier navigation with motions
-line-number = "relative"
-
-# Show ruler at column 85 for code formatting guidelines
-rulers = [85]
-
+# Show open buffers as tabs across the top of the window (GUI-tab feel)
+bufferline = "always"
 # Show diagnostics at end of line as hints
 end-of-line-diagnostics = "hint"
+
+[editor.cursor-shape]
+# Line/bar cursor in insert mode; block in normal, underline in select
+insert = "bar"
+normal = "block"
+select = "hidden"
 
 [editor.soft-wrap]
 # Enable soft-wrap to prevent horizontal scrolling in TUI
@@ -32,6 +34,8 @@ wrap-indicator = "↪ "  # Visual indicator for wrapped lines
 [editor.lsp]
 # Display LSP server messages for debugging and status updates
 display-messages = true
+# Render inlay type/parameter hints from the language server (zls, etc.)
+# display-inlay-hints = true
 
 [editor.inline-diagnostics]
 # Show inline diagnostics when the cursor is on the line
@@ -39,14 +43,41 @@ cursor-line = "warning"
 # Don't expand diagnostics unless the cursor is on the line
 other-lines = "disable"
 
+[editor.indent-guides]
+# Vertical guide lines running down through each indentation level
+render = true
+character = "┆"  # thin dashed line; alt: "│" solid, "▏" left-edge, "╎"
+skip-levels = 1  # don't draw a guide at column 0 (the outermost level)
+
 [keys.normal]
+# Buffer navigation. Shift+H / Shift+L switch buffers (read directly by Helix).
+# Cmd+Shift+W closes the current buffer (Ghostty sends it as Alt+w).
+H = "goto_previous_buffer"
+L = "goto_next_buffer"
+A-w = ":buffer-close"
+
+# Cmd+T (Ghostty sends Alt+t): save the current buffer and run `zig test` on it.
+# Output appears in a popup; :redraw cleans up the screen afterward.
+A-t = [":write", ":sh zig test %{buffer_name}", ":redraw"]
+
 # Yazi file manager integration
 # Ctrl+Y opens Yazi file manager and allows file selection
 # Uses a temporary file to communicate the selected file back to Helix
-C-y = [
+A-y = [
   ':sh rm -f /tmp/unique-file',  # Clean up any existing temp file
   ':insert-output yazi %{buffer_name} --chooser-file=/tmp/unique-file',  # Launch Yazi
   ':insert-output echo "\x1b[?1049h\x1b[?2004h" > /dev/tty',  # Terminal escape sequences
   ':open %sh{cat /tmp/unique-file}',  # Open the selected file
   ':redraw',  # Refresh the display
 ]
+
+# Buffer navigation also available from select mode
+[keys.select]
+H = "goto_previous_buffer"
+L = "goto_next_buffer"
+A-W = ":buffer-close"
+
+# Insert mode: close binding plus run-tests, so Cmd+T works while editing
+[keys.insert]
+A-W = ":buffer-close"
+A-t = [":write", ":sh zig test %{buffer_name}", ":redraw"]

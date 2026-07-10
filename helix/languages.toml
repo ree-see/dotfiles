@@ -50,6 +50,14 @@ language-servers = [ "fish-lsp" ]
 command = "fish-lsp"
 args= ["start"]
 
+# Zig with zls language server and `zig fmt` formatting on save
+[[language]]
+name = "zig"
+language-servers = [ "zls" ]
+formatter = { command = "zig", args = ["fmt", "--stdin"] }
+auto-format = true
+text-width = 85  # Match ruler setting in config.toml
+
 # Nix configuration language with auto-formatting
 [[language]]
 name = "nix"
@@ -105,6 +113,18 @@ auto-format = true
  text-width = 85  # Match ruler setting
 
 # Language server configurations
+
+# Zig language server (zls)
+# - build-on-save surfaces compile errors as diagnostics
+# - inlay hints for parameter names and inferred types
+[language-server.zls]
+command = "zls"
+config.enable_build_on_save = true
+config.enable_inlay_hints = true
+config.inlay_hints_show_parameter_name = true
+config.inlay_hints_show_builtin = true
+config.warn_style = true
+
 [language-server.typescript-language-server]
 command = "typescript-language-server"
 args = ["--stdio"]
